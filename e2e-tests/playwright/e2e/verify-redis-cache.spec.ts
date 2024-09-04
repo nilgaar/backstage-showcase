@@ -3,6 +3,7 @@ import { UIhelper } from '../utils/UIhelper';
 import { Common } from '../utils/Common';
 import Redis from 'ioredis';
 import { spawn } from 'child_process';
+import { SidebarOptions } from '../support/components/Sidebar';
 
 test.describe('Verify Redis Cache DB', () => {
   let common: Common;
@@ -14,7 +15,7 @@ test.describe('Verify Redis Cache DB', () => {
   });
 
   test('Open techdoc and verify the cache generated in redis db', async () => {
-    await uiHelper.openSidebar('Docs');
+    await uiHelper.openSidebar(SidebarOptions.Docs);
     await uiHelper.clickLink('Backstage Showcase');
 
     const portForward = spawn('/bin/sh', [

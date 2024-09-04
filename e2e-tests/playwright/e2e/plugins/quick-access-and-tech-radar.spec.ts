@@ -3,6 +3,7 @@ import { HomePage } from '../../support/pages/HomePage';
 import { Common } from '../../utils/Common';
 import { UIhelper } from '../../utils/UIhelper';
 import { TechRadar } from '../../support/pages/TechRadar';
+import { SidebarOptions } from '../../support/components/Sidebar';
 
 // Pre-req: Enable backstage-plugin-tech-radar Plugin
 
@@ -23,7 +24,7 @@ test.describe('Test Customized Quick Access and tech-radar plugin', () => {
     const uiHelper = new UIhelper(page);
     const techRadar = new TechRadar(page);
 
-    await uiHelper.openSidebar('Tech Radar');
+    await uiHelper.openSidebar(SidebarOptions.TechRadar);
     await uiHelper.verifyHeading('Tech Radar');
     await uiHelper.verifyHeading('Company Radar');
 

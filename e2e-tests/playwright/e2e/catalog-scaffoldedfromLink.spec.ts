@@ -4,6 +4,7 @@ import { Common, setupBrowser } from '../utils/Common';
 import { CatalogImport } from '../support/pages/CatalogImport';
 import { APIHelper } from '../utils/APIHelper';
 import { githubAPIEndpoints } from '../utils/APIEndpoints';
+import { SidebarOptions } from '../support/components/Sidebar';
 
 let page: Page;
 test.describe.serial('Link Scaffolded Templates to Catalog Items', () => {
@@ -35,14 +36,14 @@ test.describe.serial('Link Scaffolded Templates to Catalog Items', () => {
     await common.loginAsGithubUser();
   });
   test('Register an Template', async () => {
-    await uiHelper.openSidebar('Catalog');
+    await uiHelper.openSidebar(SidebarOptions.Catalog);
     await uiHelper.clickButton('Create');
     await uiHelper.clickButton('Register Existing Component');
     await catalogImport.registerExistingComponent(template, false);
   });
 
   test('Create a React App using the newly registered Template', async () => {
-    await uiHelper.openSidebar('Catalog');
+    await uiHelper.openSidebar(SidebarOptions.Catalog);
     await uiHelper.clickButton('Create');
     await uiHelper.searchInputPlaceholder('Create React App Template');
     await uiHelper.verifyText('Create React App Template');
@@ -91,7 +92,7 @@ test.describe.serial('Link Scaffolded Templates to Catalog Items', () => {
   });
 
   test('Verify Registered Template and scaffolderOf relation in entity Raw Yaml', async () => {
-    await uiHelper.openSidebar('Catalog');
+    await uiHelper.openSidebar(SidebarOptions.Catalog);
     await uiHelper.selectMuiBox('Kind', 'Template');
     await uiHelper.searchInputPlaceholder('Create React App Template');
     await uiHelper.verifyRowInTableByUniqueText('Create React App Template', [

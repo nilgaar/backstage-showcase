@@ -1,6 +1,7 @@
 import { test } from '@playwright/test';
 import { UIhelper } from '../../utils/UIhelper';
 import { Common, setupBrowser } from '../../utils/Common';
+import { SidebarOptions } from '../../support/components/Sidebar';
 
 let page;
 test.describe('Test ACR plugin', () => {
@@ -17,7 +18,7 @@ test.describe('Test ACR plugin', () => {
   });
 
   test('Verify ACR Images are visible', async () => {
-    await uiHelper.openSidebar('Catalog');
+    await uiHelper.openSidebar(SidebarOptions.Catalog);
     await uiHelper.verifyHeading('My Org Catalog');
     await uiHelper.selectMuiBox('Kind', 'component');
     await uiHelper.clickByDataTestId('user-picker-all');

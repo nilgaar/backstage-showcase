@@ -1,6 +1,7 @@
 import { Page, expect, TestInfo } from '@playwright/test';
 import { UIhelper } from '../UIhelper';
 import { UIhelperPO } from '../../support/pageObjects/global-obj';
+import { SidebarOptions } from '../../support/components/Sidebar';
 
 export class ThemeVerifier {
   private readonly page: Page;
@@ -12,7 +13,7 @@ export class ThemeVerifier {
   }
 
   async setTheme(theme: 'Light' | 'Dark') {
-    await this.uiHelper.openSidebar('Settings');
+    await this.uiHelper.openSidebar(SidebarOptions.Settings);
     await this.uiHelper.clickBtnByTitleIfNotPressed(`Select theme ${theme}`);
   }
 
@@ -40,13 +41,13 @@ export class ThemeVerifier {
       UIhelperPO.MuiSwitchColorPrimary,
       colorPrimary,
     );
-    await this.uiHelper.openSidebar('Catalog');
+    await this.uiHelper.openSidebar(SidebarOptions.Catalog);
     await this.uiHelper.checkCssColor(
       this.page,
       UIhelperPO.MuiButtonTextPrimary,
       colorPrimary,
     );
-    await this.uiHelper.openSidebar('Settings');
+    await this.uiHelper.openSidebar(SidebarOptions.Settings);
   }
 
   async takeScreenshotAndAttach(

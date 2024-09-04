@@ -2,6 +2,7 @@ import { Page, test } from '@playwright/test';
 import { Common, setupBrowser } from '../../utils/Common';
 import { UIhelper } from '../../utils/UIhelper';
 import { Clusters } from '../../support/pages/Clusters';
+import { SidebarOptions } from '../../support/components/Sidebar';
 
 //Pre-req: Enable janus-idp-backstage-plugin-ocm-backend-dynamic and janus-idp-backstage-plugin-ocm Plugins
 //Pre-req: Install Advanced Cluster Management for Kubernetes "MultiClusterHub"
@@ -31,7 +32,7 @@ test.describe.serial('Test OCM plugin', () => {
     await common.loginAsGuest();
   });
   test('Navigate to Clusters and Verify OCM Clusters', async () => {
-    await uiHelper.openSidebar('Clusters');
+    await uiHelper.openSidebar(SidebarOptions.Clusters);
     await uiHelper.verifyRowInTableByUniqueText(clusterDetails.clusterName, [
       clusterDetails.status,
       clusterDetails.platform,
@@ -53,7 +54,7 @@ test.describe.serial('Test OCM plugin', () => {
   });
 
   test('Navigate to Catalog > resources and verify cluster', async () => {
-    await uiHelper.openSidebar('Catalog');
+    await uiHelper.openSidebar(SidebarOptions.Catalog);
     await common.waitForLoad();
     await uiHelper.selectMuiBox('Kind', 'Resource');
     await uiHelper.verifyRowsInTable([clusterDetails.clusterName]);

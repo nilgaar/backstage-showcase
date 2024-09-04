@@ -3,6 +3,7 @@ import { UIhelper } from '../utils/UIhelper';
 import { Common, setupBrowser } from '../utils/Common';
 import { CatalogImport } from '../support/pages/CatalogImport';
 import { UIhelperPO } from '../support/pageObjects/global-obj';
+import { SidebarOptions } from '../support/components/Sidebar';
 
 let page: Page;
 test.describe('Test timestamp column on Catalog', () => {
@@ -24,7 +25,7 @@ test.describe('Test timestamp column on Catalog', () => {
   });
 
   test.beforeEach(async () => {
-    await uiHelper.openSidebar('Catalog');
+    await uiHelper.openSidebar(SidebarOptions.Catalog);
     await uiHelper.verifyHeading('My Org Catalog');
     await uiHelper.selectMuiBox('Kind', 'Component');
     await uiHelper.clickByDataTestId('user-picker-all');

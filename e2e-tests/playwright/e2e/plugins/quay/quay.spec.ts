@@ -2,6 +2,7 @@ import { expect, test } from '@playwright/test';
 import { UIhelper } from '../../../utils/UIhelper';
 import { Common } from '../../../utils/Common';
 import { ImageRegistry } from '../../../utils/quay/quay';
+import { SidebarOptions } from '../../../support/components/Sidebar';
 
 test.describe.skip('Test Quay.io plugin', () => {
   const QUAY_REPOSITORY = 'janus-idp/backstage-showcase';
@@ -12,7 +13,7 @@ test.describe.skip('Test Quay.io plugin', () => {
     await common.loginAsGuest();
 
     uiHelper = new UIhelper(page);
-    await uiHelper.openSidebar('Catalog');
+    await uiHelper.openSidebar(SidebarOptions.Catalog);
     await uiHelper.selectMuiBox('Kind', 'Component');
     await uiHelper.clickByDataTestId('user-picker-all');
     await uiHelper.clickLink('backstage-janus');

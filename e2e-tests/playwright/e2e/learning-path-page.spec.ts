@@ -1,6 +1,7 @@
 import { expect, test } from '@playwright/test';
 import { UIhelper } from '../utils/UIhelper';
 import { Common } from '../utils/Common';
+import { SidebarOptions } from '../support/components/Sidebar';
 
 test.describe('Learning Paths', () => {
   let common: Common;
@@ -15,7 +16,7 @@ test.describe('Learning Paths', () => {
   test('Verify that links in Learning Paths for Backstage opens in a new tab', async ({
     page,
   }) => {
-    await uiHelper.openSidebar('Learning Paths');
+    await uiHelper.openSidebar(SidebarOptions.LearningPaths);
 
     for (let i = 0; i < 5; i++) {
       const learningPathCard = page

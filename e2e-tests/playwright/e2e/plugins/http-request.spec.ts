@@ -2,6 +2,7 @@ import { test } from '@playwright/test';
 import { UIhelper } from '../../utils/UIhelper';
 import { Common } from '../../utils/Common';
 import { CatalogImport } from '../../support/pages/CatalogImport';
+import { SidebarOptions } from '../../support/components/Sidebar';
 
 // https://github.com/RoadieHQ/roadie-backstage-plugins/tree/main/plugins/scaffolder-actions/scaffolder-backend-module-http-request
 // Pre-req: Enable roadiehq-scaffolder-backend-module-http-request-dynamic plugin
@@ -24,13 +25,13 @@ test.describe.skip(
     });
 
     test('Create a software template using http-request plugin', async () => {
-      await uiHelper.openSidebar('Create...');
+      await uiHelper.openSidebar(SidebarOptions.Create);
       await uiHelper.verifyHeading('Templates');
       await uiHelper.waitForHeaderTitle();
       await uiHelper.clickButton('Register Existing Component');
       await catalogImport.registerExistingComponent(template);
 
-      await uiHelper.openSidebar('Catalog');
+      await uiHelper.openSidebar(SidebarOptions.Catalog);
       await uiHelper.selectMuiBox('Kind', 'Template');
       await uiHelper.searchInputPlaceholder('Test');
       await uiHelper.clickLink('Test HTTP Request');

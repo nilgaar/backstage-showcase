@@ -1,6 +1,7 @@
 import { test, Page } from '@playwright/test';
 import { Common } from '../utils/Common';
 import { UIhelper } from '../utils/UIhelper';
+import { SidebarOptions } from '../support/components/Sidebar';
 
 let page: Page;
 test.describe.skip('Google signin happy path', () => {
@@ -26,7 +27,7 @@ test.describe.skip('Google signin happy path', () => {
   });
 
   test('Verify Google Sign in', async () => {
-    await uiHelper.openSidebar('Settings');
+    await uiHelper.openSidebar(SidebarOptions.Settings);
     await uiHelper.clickTab('Authentication Providers');
     await page.getByTitle('Sign in to Google').click();
     await uiHelper.clickButton('Log in');

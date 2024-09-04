@@ -1,6 +1,7 @@
 import { test } from '@playwright/test';
 import { UIhelper } from '../../../utils/UIhelper';
 import { Common } from '../../../utils/Common';
+import { SidebarOptions } from '../../../support/components/Sidebar';
 
 // Pre-req: backstage-plugin-catalog-backend-module-gitlab-dynamic
 // Pre-req: immobiliarelabs-backstage-plugin-gitlab-backend-dynamic
@@ -12,7 +13,7 @@ test.describe('gitlab discovery UI tests', () => {
     uiHelper = new UIhelper(page);
     common = new Common(page);
     await common.loginAsGuest();
-    await uiHelper.openSidebar('Catalog');
+    await uiHelper.openSidebar(SidebarOptions.Catalog);
   });
 
   test('GitLab integration for discovering catalog entities from GitLab', async () => {

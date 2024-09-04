@@ -7,6 +7,7 @@ import {
   CatalogImport,
 } from '../support/pages/CatalogImport';
 import { templates } from '../support/testData/templates';
+import { SidebarOptions } from '../support/components/Sidebar';
 
 let page: Page;
 test.describe.serial('GitHub Happy path', () => {
@@ -29,14 +30,14 @@ test.describe.serial('GitHub Happy path', () => {
   });
 
   test('Verify Profile is Github Account Name in the Settings page', async () => {
-    await uiHelper.openSidebar('Settings');
+    await uiHelper.openSidebar(SidebarOptions.Settings);
     await expect(page).toHaveURL('/settings');
     await uiHelper.verifyHeading(process.env.GH_USER_ID as string);
     await uiHelper.verifyHeading(`User Entity: ${process.env.GH_USER_ID}`);
   });
 
   test('Register an existing component', async () => {
-    await uiHelper.openSidebar('Catalog');
+    await uiHelper.openSidebar(SidebarOptions.Catalog);
     await uiHelper.selectMuiBox('Kind', 'Component');
     await uiHelper.clickButton('Create');
     await uiHelper.clickButton('Register Existing Component');
@@ -44,7 +45,7 @@ test.describe.serial('GitHub Happy path', () => {
   });
 
   test('Verify that the following components were ingested into the Catalog', async () => {
-    await uiHelper.openSidebar('Catalog');
+    await uiHelper.openSidebar(SidebarOptions.Catalog);
     await uiHelper.selectMuiBox('Kind', 'Group');
     await uiHelper.verifyComponentInCatalog('Group', ['Janus-IDP Authors']);
 
@@ -62,14 +63,14 @@ test.describe.serial('GitHub Happy path', () => {
       'S3 Object bucket storage',
     ]);
 
-    await uiHelper.openSidebar('Catalog');
+    await uiHelper.openSidebar(SidebarOptions.Catalog);
     await uiHelper.selectMuiBox('Kind', 'User');
     await uiHelper.searchInputPlaceholder('rhdh');
     await uiHelper.verifyRowsInTable(['rhdh-qe']);
   });
 
   test('Verify all 12 Software Templates appear in the Create page', async () => {
-    await uiHelper.openSidebar('Create...');
+    await uiHelper.openSidebar(SidebarOptions.Create);
     await uiHelper.verifyHeading('Templates');
     await uiHelper.waitForHeaderTitle();
 
@@ -80,7 +81,7 @@ test.describe.serial('GitHub Happy path', () => {
   });
 
   test('Click login on the login popup and verify that Overview tab renders', async () => {
-    await uiHelper.openSidebar('Catalog');
+    await uiHelper.openSidebar(SidebarOptions.Catalog);
     await uiHelper.selectMuiBox('Kind', 'Component');
     await uiHelper.clickByDataTestId('user-picker-all');
     await uiHelper.clickLink('Backstage Showcase');
@@ -141,7 +142,7 @@ test.describe.serial('GitHub Happy path', () => {
 
   //FIXME
   test.skip('Verify that the 5, 10, 20 items per page option properly displays the correct number of PRs', async () => {
-    await uiHelper.openSidebar('Catalog');
+    await uiHelper.openSidebar(SidebarOptions.Catalog);
     await uiHelper.clickLink('Backstage Showcase');
     await common.clickOnGHloginPopup();
     await uiHelper.clickTab('Pull/Merge Requests');
@@ -175,7 +176,7 @@ test.describe.serial('GitHub Happy path', () => {
   });
 
   test('Sign out and verify that you return back to the Sign in page', async () => {
-    await uiHelper.openSidebar('Settings');
+    await uiHelper.openSidebar(SidebarOptions.Settings);
     await common.signOut();
   });
 

@@ -9,6 +9,7 @@ import {
 import { Roles, Response } from '../../../support/pages/rbac';
 import { Common, setupBrowser } from '../../../utils/Common';
 import { UIhelper } from '../../../utils/UIhelper';
+import { SidebarOptions } from '../../../support/components/Sidebar';
 
 test.describe.serial('Test RBAC plugin REST API', () => {
   let common: Common;
@@ -24,13 +25,13 @@ test.describe.serial('Test RBAC plugin REST API', () => {
 
     await common.loginAsGithubUser();
 
-    await uiHelper.openSidebar('Catalog');
+    await uiHelper.openSidebar(SidebarOptions.Catalog);
     const requestPromise = page.waitForRequest(
       request =>
         request.url() === `${baseURL}/api/search/query?term=` &&
         request.method() === 'GET',
     );
-    await uiHelper.openSidebar('Home');
+    await uiHelper.openSidebar(SidebarOptions.Home);
     const getRequest = await requestPromise;
     const authToken = await getRequest.headerValue('Authorization');
 
@@ -100,10 +101,10 @@ test.describe.serial('Test RBAC plugin REST API', () => {
   });
 
   test('Test catalog-entity read is denied', async () => {
-    await uiHelper.openSidebar('Catalog');
+    await uiHelper.openSidebar(SidebarOptions.Catalog);
     await uiHelper.selectMuiBox('Kind', 'Component');
     await uiHelper.verifyTableIsEmpty();
-    await uiHelper.openSidebar('Create...');
+    await uiHelper.openSidebar(SidebarOptions.Create);
     await uiHelper.verifyText(
       'No templates found that match your filter. Learn more about',
       false,
@@ -148,7 +149,7 @@ test.describe.serial('Test RBAC plugin REST API', () => {
   });
 
   test('Test catalog-entity read is allowed', async () => {
-    await uiHelper.openSidebar('Catalog');
+    await uiHelper.openSidebar(SidebarOptions.Catalog);
     await uiHelper.selectMuiBox('Kind', 'API');
     await uiHelper.clickLink('Nexus Repo Manager 3');
   });
@@ -160,7 +161,7 @@ test.describe.serial('Test RBAC plugin REST API', () => {
   });
 
   test('Test catalog-entity create is allowed', async () => {
-    await uiHelper.openSidebar('Create...');
+    await uiHelper.openSidebar(SidebarOptions.Create);
     expect(
       await uiHelper.isLinkVisible('Register Existing Component'),
     ).toBeTruthy();
@@ -204,8 +205,8 @@ test.describe.serial('Test RBAC plugin REST API', () => {
   });
 
   test('Test that the bad PUT didnt go through and catalog-entities can be read', async () => {
-    await uiHelper.openSidebar('Home');
-    await uiHelper.openSidebar('Create...');
+    await uiHelper.openSidebar(SidebarOptions.Home);
+    await uiHelper.openSidebar(SidebarOptions.Create);
     expect(
       await uiHelper.isTextVisible(
         'No templates found that match your filter. Learn more about',
@@ -214,7 +215,7 @@ test.describe.serial('Test RBAC plugin REST API', () => {
   });
 
   test('Test that the good PUT request went through and catalog-entities can be refreshed', async () => {
-    await uiHelper.openSidebar('Catalog');
+    await uiHelper.openSidebar(SidebarOptions.Catalog);
     await uiHelper.selectMuiBox('Kind', 'API');
     await uiHelper.clickLink('Nexus Repo Manager 3');
     expect(
@@ -223,7 +224,7 @@ test.describe.serial('Test RBAC plugin REST API', () => {
   });
 
   test('Test that the good PUT request went through and catalog-entities cant be created', async () => {
-    await uiHelper.openSidebar('Create...');
+    await uiHelper.openSidebar(SidebarOptions.Create);
     expect(
       await uiHelper.isLinkVisible('Register Existing Component'),
     ).toBeFalsy();
@@ -247,7 +248,7 @@ test.describe.serial('Test RBAC plugin REST API', () => {
   });
 
   test('Test catalog-entity refresh is denied after DELETE', async () => {
-    await uiHelper.openSidebar('Catalog');
+    await uiHelper.openSidebar(SidebarOptions.Catalog);
     await uiHelper.selectMuiBox('Kind', 'API');
     await uiHelper.clickLink('Nexus Repo Manager 3');
     expect(await uiHelper.isBtnVisible('Schedule entity refresh')).toBeFalsy();
@@ -294,7 +295,7 @@ test.describe.serial('Test RBAC plugin as an admin user', () => {
     common = new Common(page);
     rolesHelper = new Roles(page);
     await common.loginAsGithubUser();
-    await uiHelper.openSidebar('Administration');
+    await uiHelper.openSidebar(SidebarOptions.Administration);
     await uiHelper.verifyHeading('Administration');
     await uiHelper.verifyLink('RBAC');
     await uiHelper.clickTab('RBAC');
@@ -512,7 +513,7 @@ test.describe('Test RBAC plugin as a guest user', () => {
     page,
   }) => {
     const uiHelper = new UIhelper(page);
-    await uiHelper.openSidebar('Administration');
+    await uiHelper.openSidebar(SidebarOptions.Administration);
     const tabLocator = page.locator(`text="RBAC"`);
     await expect(tabLocator).not.toBeVisible();
   });

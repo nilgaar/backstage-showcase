@@ -6,6 +6,7 @@ import {
   RoleFormPO,
   RoleListPO,
 } from '../pageObjects/page-obj';
+import { SidebarOptions } from '../components/Sidebar';
 
 export class Roles {
   private page: Page;
@@ -200,7 +201,7 @@ export class Roles {
   }
 
   async deleteRole(name: string) {
-    await this.uiHelper.openSidebar('Administration');
+    await this.uiHelper.openSidebar(SidebarOptions.Administration);
     await this.uiHelper.clickTab('RBAC');
     const button = this.page.locator(RoleListPO.deleteRole(name));
     await button.waitFor({ state: 'visible' });

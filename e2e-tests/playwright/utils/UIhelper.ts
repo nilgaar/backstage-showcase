@@ -1,5 +1,6 @@
 import { expect, Page } from '@playwright/test';
 import { UIhelperPO } from '../support/pageObjects/global-obj';
+import { SidebarOptions } from '../support/components/Sidebar';
 
 export class UIhelper {
   private page: Page;
@@ -9,7 +10,7 @@ export class UIhelper {
   }
 
   async verifyComponentInCatalog(kind: string, expectedRows: string[]) {
-    await this.openSidebar('Catalog');
+    await this.openSidebar(SidebarOptions.Catalog);
     await this.selectMuiBox('Kind', kind);
     await this.verifyRowsInTable(expectedRows);
   }
@@ -141,7 +142,7 @@ export class UIhelper {
     await this.page.waitForSelector('nav a', { timeout: 120000 });
   }
 
-  async openSidebar(navBarText: string) {
+  async openSidebar(navBarText: SidebarOptions) {
     const navLink = this.page.locator(`nav a:has-text("${navBarText}")`);
     await navLink.waitFor({ state: 'visible' });
     await navLink.click();

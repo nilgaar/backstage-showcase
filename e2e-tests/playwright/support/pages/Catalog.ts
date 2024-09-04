@@ -1,5 +1,6 @@
 import { Page } from '@playwright/test';
 import { UIhelper } from '../../utils/UIhelper';
+import { SidebarOptions } from '../components/Sidebar';
 
 //${BASE_URL}/catalog page
 export class Catalog {
@@ -19,7 +20,7 @@ export class Catalog {
   }
 
   async goToBackstageJanusProject() {
-    await this.uiHelper.openSidebar('Catalog');
+    await this.uiHelper.openSidebar(SidebarOptions.Catalog);
     await this.uiHelper.clickByDataTestId('user-picker-all');
     await this.uiHelper.clickLink('backstage-janus');
   }

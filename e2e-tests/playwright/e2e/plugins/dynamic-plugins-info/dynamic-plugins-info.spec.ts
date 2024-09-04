@@ -2,6 +2,7 @@ import { expect, test } from '@playwright/test';
 import { UIhelper } from '../../../utils/UIhelper';
 import { Common } from '../../../utils/Common';
 import { UIhelperPO } from '../../../support/pageObjects/global-obj';
+import { SidebarOptions } from '../../../support/components/Sidebar';
 
 test.describe('dynamic-plugins-info UI tests', () => {
   let uiHelper: UIhelper;
@@ -11,7 +12,7 @@ test.describe('dynamic-plugins-info UI tests', () => {
     uiHelper = new UIhelper(page);
     common = new Common(page);
     await common.loginAsGuest();
-    await uiHelper.openSidebar('Administration');
+    await uiHelper.openSidebar(SidebarOptions.Administration);
     await uiHelper.verifyHeading('Administration');
     await uiHelper.verifyLink('Plugins');
     await uiHelper.clickTab('Plugins');
