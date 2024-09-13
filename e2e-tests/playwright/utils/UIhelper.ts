@@ -112,7 +112,8 @@ export class UIhelper {
       });
       const button = this.page.locator(locator).first();
       return button.isVisible();
-    } catch (error) {
+    } catch (e) {
+      console.log(e);
       return false;
     }
   }
