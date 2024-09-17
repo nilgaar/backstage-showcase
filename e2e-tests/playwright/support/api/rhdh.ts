@@ -1,15 +1,15 @@
-import { expect } from '@playwright/test';
-import axios from 'axios';
+import { expect, request } from '@playwright/test';
 
 export class RhdhApi {
-  private myAxios = axios.create({
+  private _myContext = request.newContext({
     baseURL: process.env.BASE_URL + '/api/',
   });
 
   private async getGuestToken() {
-    const req = await this.myAxios.post('auth/guest/refresh');
+    const context = await this._myContext;
+    const req = await context.post('auth/guest/refresh');
     expect(req.status).toBe(200);
-    return req.data.backstageIdentity.token;
+    return (await req.json()).backstageIdentity.token;
   }
 
   public auth() {

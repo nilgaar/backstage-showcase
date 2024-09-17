@@ -1,9 +1,8 @@
 import User from './user';
 import Group from './group';
-import { expect, Page } from '@playwright/test';
+import { expect, Page, request } from '@playwright/test';
 import { UIhelper } from '../UIhelper';
 import { CatalogUsersPO } from '../../support/pageObjects/catalog/catalog-users-obj';
-import axios, { Axios } from 'axios';
 
 interface AuthResponse {
   access_token: string;
@@ -13,20 +12,21 @@ class Keycloak {
   private readonly realm: string;
   private readonly clientId: string;
   private readonly clientSecret: string;
-  private readonly myAxios: Axios;
+  private readonly myContext: any;
 
   constructor() {
     this.baseURL = process.env.KEYCLOAK_BASE_URL;
     this.realm = process.env.KEYCLOAK_REALM;
     this.clientSecret = process.env.KEYCLOAK_CLIENT_SECRET;
     this.clientId = process.env.KEYCLOAK_CLIENT_ID;
-    this.myAxios = axios.create({
+    this.myContext = request.newContext({
       baseURL: this.baseURL,
     });
   }
 
   async getAuthenticationToken(): Promise<string> {
-    const response = await axios.post(
+    const context = await this.myContext;
+    const response = await context.post(
       `/realms/${this.realm}/protocol/openid-connect/token`,
       {
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -44,21 +44,20 @@ class Keycloak {
   }
 
   async getUsers(authToken: string): Promise<User[]> {
-    const response = await this.myAxios.get(
-      `/admin/realms/${this.realm}/users`,
-      {
-        headers: {
-          Authorization: `Bearer ${authToken}`,
-        },
+    const context = await this.myContext;
+    const response = await context.get(`/admin/realms/${this.realm}/users`, {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
       },
-    );
+    });
 
     if (response.status !== 200) throw new Error('Failed to get users');
     return response.data as Promise<User[]>;
   }
 
   async getGroupsOfUser(authToken: string, userId: string): Promise<Group[]> {
-    const response = await this.myAxios.get(
+    const context = await this.myContext;
+    const response = await context.get(
       `/admin/realms/${this.realm}/users/${userId}/groups`,
       {
         headers: {

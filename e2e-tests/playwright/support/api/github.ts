@@ -1,6 +1,6 @@
-import axios, { AxiosResponse } from 'axios';
 import { getOrganizationResponse, ItemStatus } from './github-structures';
 import { JANUS_ORG, SHOWCASE_REPO } from '../../utils/constants';
+import { APIResponse, request } from '@playwright/test';
 
 export default class GithubApi {
   private static API_URL = 'https://api.github.com';
@@ -15,12 +15,12 @@ export default class GithubApi {
     org = JANUS_ORG,
   ): Promise<getOrganizationResponse> {
     const req = await this._organization(org).get();
-    return new getOrganizationResponse(req.data);
+    return new getOrganizationResponse(req.json());
   }
 
   public async getReposFromOrg(org = JANUS_ORG) {
     const req = await this._organization(org).repos();
-    return req.data;
+    return req.json();
   }
 
   public async getPullRequestsFromRepo(
@@ -33,7 +33,7 @@ export default class GithubApi {
 
   public async getIssuesFromRepo(repo = SHOWCASE_REPO) {
     const req = await this._repository(repo).issues().get();
-    return req.data;
+    return req.json();
   }
 
   public async getIssuesFromRepoPaginated(repo = SHOWCASE_REPO) {
@@ -42,22 +42,23 @@ export default class GithubApi {
 
   public async deleteRepo(repo = SHOWCASE_REPO) {
     const req = await this._repository(repo).detelete();
-    return req.data;
+    return req.json();
   }
 
   public async getRunsFromAction(repo = SHOWCASE_REPO) {
     const req = await this._repository(repo).actions().runs();
-    return req.data;
+    return req.json();
   }
 
-  private myAxios = axios.create({
+  private _myContext = request.newContext({
     baseURL: GithubApi.API_URL,
-    headers: GithubApi.AUTH_HEADER,
+    extraHTTPHeaders: GithubApi.AUTH_HEADER,
   });
 
   private async _paginate(url: string, page = 1, response: any[] = []) {
-    const res = await this.myAxios.get(url + `&page=${page}`);
-    const body = res.data;
+    const context = await this._myContext;
+    const res = await context.get(url + `&page=${page}`);
+    const body = res.json();
 
     if (!Array.isArray(body)) {
       throw new Error(
@@ -77,16 +78,18 @@ export default class GithubApi {
     const url = '/orgs/';
 
     return {
-      get: async (): Promise<AxiosResponse> => {
+      get: async (): Promise<APIResponse> => {
+        const context = await this._myContext;
         const path: string = url + organization;
-        return this.myAxios.get(path);
+        return context.get(path);
       },
 
-      repos: async (): Promise<AxiosResponse> => {
+      repos: async (): Promise<APIResponse> => {
+        const context = await this._myContext;
         const organizationResponse = await new GithubApi()
           ._organization(organization)
           .get();
-        return this.myAxios.get(organizationResponse['repos_url']);
+        return context.get(organizationResponse['repos_url']);
       },
     };
   }
@@ -98,8 +101,9 @@ export default class GithubApi {
       pullRequests: (state: ItemStatus, perPage: number) => {
         const payload = `/pulls?per_page=${perPage}&state=${state}`;
         return {
-          get: () => {
-            return this.myAxios.get(path + payload);
+          get: async () => {
+            const context = await this._myContext;
+            return context.get(path + payload);
           },
           getPaginated: async (): Promise<any[]> => {
             return this._paginate(path + payload);
@@ -114,25 +118,28 @@ export default class GithubApi {
       ) => {
         const payload = `/issues?per_page=${perPage}&sort=${sort}&state=${state}`;
         return {
-          get: async (): Promise<AxiosResponse> => {
+          get: async (): Promise<APIResponse> => {
+            const context = await this._myContext;
             const url = path + payload;
-            return await this.myAxios.get(url);
+            return await context.get(url);
           },
           getPaginated: (): Promise<any[]> => {
             return this._paginate(path + payload);
           },
         };
       },
-      detelete: async (): Promise<AxiosResponse> => {
-        return await this.myAxios.delete(path);
+      detelete: async (): Promise<APIResponse> => {
+        const context = await this._myContext;
+        return await context.delete(path);
       },
       actions: () => {
         const actionsPath = '/actions/';
         return {
-          runs: async (perPage = 100): Promise<AxiosResponse> => {
+          runs: async (perPage = 100): Promise<APIResponse> => {
+            const context = await this._myContext;
             const runsPath = actionsPath + 'runs';
             const url = runsPath + `?per_page=${perPage}`;
-            return await this.myAxios.get(url);
+            return await context.get(url);
           },
         };
       },
