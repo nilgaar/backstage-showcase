@@ -2,7 +2,7 @@ import { expect, Page } from '@playwright/test';
 import { GITHUB_URL } from '../../utils/constants';
 
 export class CatalogItem {
-  private page: Page;
+  private readonly page: Page;
 
   githubLink = (path: string): string => {
     return `a[href*="${GITHUB_URL}${path}"]`;

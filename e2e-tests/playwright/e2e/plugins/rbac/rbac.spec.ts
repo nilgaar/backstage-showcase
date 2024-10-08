@@ -50,11 +50,11 @@ test.describe.serial('Test RBAC plugin REST API', () => {
     );
 
     await responseHelper.checkResponse(
-      await rolesResponse,
+      rolesResponse,
       responseHelper.getExpectedRoles(),
     );
     await responseHelper.checkResponse(
-      await policiesResponse,
+      policiesResponse,
       responseHelper.getExpectedPolicies(),
     );
   });
@@ -371,7 +371,7 @@ test.describe
 
     await expect(page.locator('header')).toContainText('user:rhdh-qe-2');
     await page.getByTestId('menu-button').click();
-    const unregisterUserOwned = await page.getByText('Unregister entity');
+    const unregisterUserOwned = page.getByText('Unregister entity');
     await expect(unregisterUserOwned).toBeEnabled();
 
     await page.getByText('Unregister entity').click();
@@ -386,7 +386,7 @@ test.describe
       'janus-qe/rhdh-qe-2-team',
     );
     await page.getByTestId('menu-button').click();
-    const unregisterGroupOwned = await page.getByText('Unregister entity');
+    const unregisterGroupOwned = page.getByText('Unregister entity');
     await expect(unregisterGroupOwned).toBeDisabled();
   });
 
@@ -626,7 +626,7 @@ test.describe('Test RBAC plugin as a guest user', () => {
   }) => {
     const uiHelper = new UIhelper(page);
     await uiHelper.openSidebarButton('Administration');
-    const dropdownMenuLocator = page.locator(`text="RBAC"`);
+    const dropdownMenuLocator = page.locator('text="RBAC"');
     await expect(dropdownMenuLocator).not.toBeVisible();
   });
 });

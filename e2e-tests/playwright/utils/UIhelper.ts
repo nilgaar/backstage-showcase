@@ -2,7 +2,7 @@ import { expect, Locator, Page } from '@playwright/test';
 import { uiHelperPo } from '../support/pageObjects/global-obj';
 
 export class UIhelper {
-  private page: Page;
+  private readonly page: Page;
 
   constructor(page: Page) {
     this.page = page;
@@ -74,12 +74,12 @@ export class UIhelper {
 
   async verifyDivHasText(divText: string) {
     await expect(
-      this.page.locator(`div`).filter({ hasText: divText }),
+      this.page.locator('div').filter({ hasText: divText }),
     ).toBeVisible();
   }
 
   async clickLink(linkText: string) {
-    await this.page.locator(`a`).filter({ hasText: linkText }).first().click();
+    await this.page.locator('a').filter({ hasText: linkText }).first().click();
   }
 
   async verifyLink(
@@ -169,11 +169,11 @@ export class UIhelper {
   }
 
   async verifyRowsInTable(
-    rowTexts: (string | RegExp)[],
+    rowTexts: Array<string | RegExp>,
     exact: boolean = true,
   ) {
     for (const rowText of rowTexts) {
-      await this.verifyTextInLocator(`tr>td`, rowText, exact);
+      await this.verifyTextInLocator('tr>td', rowText, exact);
     }
   }
 
@@ -213,7 +213,7 @@ export class UIhelper {
   ) {
     for (const rowText of rowTexts) {
       const rowLocator = this.page
-        .locator(`tr>th`)
+        .locator('tr>th')
         .getByText(rowText, { exact: exact })
         .first();
       await rowLocator.waitFor({ state: 'visible' });
@@ -244,7 +244,7 @@ export class UIhelper {
     await tabLocator.click();
   }
 
-  async verifyCellsInTable(texts: (string | RegExp)[]) {
+  async verifyCellsInTable(texts: Array<string | RegExp>) {
     for (const text of texts) {
       const cellLocator = this.page
         .locator(uiHelperPo.muiTableCell)
@@ -368,7 +368,7 @@ export class UIhelper {
 
     // Checks if the table has at least one row with data
     // Excludes rows that have cells spanning multiple columns, such as "No data available" messages
-    const rowSelector = `table tbody tr:not(:has(td[colspan]))`;
+    const rowSelector = 'table tbody tr:not(:has(td[colspan]))';
     const rowCount = await this.page.locator(rowSelector).count();
     expect(rowCount).toBeGreaterThan(0);
   }
@@ -387,7 +387,7 @@ export class UIhelper {
   }
 
   async checkCssColor(page: Page, selector: string, expectedColor: string) {
-    const elements = await page.locator(selector);
+    const elements = page.locator(selector);
     const count = await elements.count();
     const expectedRgbColor = this.toRgb(expectedColor);
 
@@ -399,7 +399,7 @@ export class UIhelper {
     }
   }
   async verifyTableIsEmpty() {
-    const rowSelector = `table tbody tr:not(:has(td[colspan]))`;
+    const rowSelector = 'table tbody tr:not(:has(td[colspan]))';
     const rowCount = await this.page.locator(rowSelector).count();
     expect(rowCount).toEqual(0);
   }

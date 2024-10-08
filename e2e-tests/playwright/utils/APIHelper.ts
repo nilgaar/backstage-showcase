@@ -2,7 +2,7 @@ import { request, APIResponse, expect } from '@playwright/test';
 import { githubAPIEndpoints } from './APIEndpoints';
 
 export class APIHelper {
-  private static githubAPIVersion = '2022-11-28';
+  private static readonly githubAPIVersion = '2022-11-28';
 
   static async githubRequest(
     method: string,
@@ -136,7 +136,7 @@ export class APIHelper {
     return data.backstageIdentity.token;
   }
 
-  async getGuestAuthHeader(): Promise<{ [key: string]: string }> {
+  async getGuestAuthHeader(): Promise<Record<string, string>> {
     const token = await this.getGuestToken();
     const headers = {
       authorization: `Bearer ${token}`,

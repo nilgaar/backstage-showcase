@@ -8,8 +8,8 @@ import {
 } from '../pageObjects/page-obj';
 
 export class Roles {
-  private page: Page;
-  private uiHelper: UIhelper;
+  private readonly page: Page;
+  private readonly uiHelper: UIhelper;
 
   constructor(page: Page) {
     this.page = page;
@@ -234,8 +234,8 @@ interface Role {
 }
 
 export class Response {
-  private authToken: string;
-  private simpleRequest;
+  private readonly authToken: string;
+  private readonly simpleRequest;
 
   constructor(authToken: string) {
     this.authToken = authToken;

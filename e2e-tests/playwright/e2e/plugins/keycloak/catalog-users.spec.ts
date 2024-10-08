@@ -1,8 +1,8 @@
+import { test, expect } from '@playwright/test';
 import { CatalogUsersPO } from '../../../support/pageObjects/catalog/catalog-users-obj';
 import Keycloak from '../../../utils/keycloak/keycloak';
 import { UIhelper } from '../../../utils/UIhelper';
 import { Common } from '../../../utils/Common';
-import { test, expect } from '@playwright/test';
 
 test.describe('Test Keycloak plugin', () => {
   let uiHelper: UIhelper;

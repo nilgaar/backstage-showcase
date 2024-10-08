@@ -1,8 +1,8 @@
 import { expect, test } from '@playwright/test';
-import { UIhelper } from '../utils/UIhelper';
-import { Common } from '../utils/Common';
 import Redis from 'ioredis';
 import { spawn } from 'child_process';
+import { UIhelper } from '../utils/UIhelper';
+import { Common } from '../utils/Common';
 
 test.describe('Verify Redis Cache DB', () => {
   let common: Common;

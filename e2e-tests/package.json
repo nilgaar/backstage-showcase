@@ -30,6 +30,7 @@
     "typescript": "5.6.2"
   },
   "dependencies": {
+    "eslint-plugin-prettier": "^5.2.1",
     "node-fetch": "3.3.2"
   }
 }

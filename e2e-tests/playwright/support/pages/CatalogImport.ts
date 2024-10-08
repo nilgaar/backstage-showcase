@@ -5,8 +5,8 @@ import { APIHelper } from '../../utils/APIHelper';
 import { githubAPIEndpoints } from '../../utils/APIEndpoints';
 
 export class CatalogImport {
-  private page: Page;
-  private uiHelper: UIhelper;
+  private readonly page: Page;
+  private readonly uiHelper: UIhelper;
 
   constructor(page: Page) {
     this.page = page;
@@ -45,7 +45,7 @@ export class CatalogImport {
 
 export class BackstageShowcase {
   private readonly page: Page;
-  private uiHelper: UIhelper;
+  private readonly uiHelper: UIhelper;
 
   constructor(page: Page) {
     this.page = page;

@@ -1,12 +1,12 @@
+import { APIResponse, request } from '@playwright/test';
 import { GetOrganizationResponse } from './github-structures';
 import { JANUS_ORG } from '../../utils/constants';
-import { APIResponse, request } from '@playwright/test';
 
 // https://docs.github.com/en/rest?apiVersion=2022-11-28
 export default class GithubApi {
-  private static apiUrl = 'https://api.github.com';
-  private static apiVersion = '2022-11-28';
-  private static authHeader = {
+  private static readonly apiUrl = 'https://api.github.com';
+  private static readonly apiVersion = '2022-11-28';
+  private static readonly authHeader = {
     accept: 'application/vnd.github+json',
     authorization: `Bearer ${process.env.GH_RHDH_QE_USER_TOKEN}`,
     // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -34,7 +34,7 @@ export default class GithubApi {
     return [200, 302, 304].includes(status);
   }
 
-  private _myContext = request.newContext({
+  private readonly _myContext = request.newContext({
     baseURL: GithubApi.apiUrl,
     extraHTTPHeaders: GithubApi.authHeader,
   });

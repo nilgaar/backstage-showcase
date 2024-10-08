@@ -40,7 +40,7 @@ test.describe('Audit Log check for Catalog Plugin', () => {
       'user:development/guest requested the parameter schema for template:default/hello-world-2',
       'GET',
       '/api/scaffolder/v2/templates/default/template/hello-world-2/parameter-schema',
-      baseURL!,
+      baseURL,
       'scaffolder',
     );
   });
@@ -56,7 +56,7 @@ test.describe('Audit Log check for Catalog Plugin', () => {
       'user:development/guest requested the list of installed actions',
       'GET',
       '/api/scaffolder/v2/actions',
-      baseURL!,
+      baseURL,
       'scaffolder',
     );
   });
@@ -72,7 +72,7 @@ test.describe('Audit Log check for Catalog Plugin', () => {
       'user:development/guest requested for the list of scaffolder tasks',
       'GET',
       '/api/scaffolder/v2/tasks?createdBy=user%3Adevelopment%2Fguest',
-      baseURL!,
+      baseURL,
       'scaffolder',
     );
   });

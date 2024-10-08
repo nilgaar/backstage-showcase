@@ -27,7 +27,7 @@ test.describe.serial('Bulk Import plugin', () => {
     owner: 'janus-test',
     repoName: newRepoName,
     updatedComponentName: `${newRepoName}-updated`,
-    labels: `bulkimport1: test1;bulkimport2: test2`,
+    labels: 'bulkimport1: test1;bulkimport2: test2',
     repoUrl: `github.com/janus-test/${newRepoName}`,
   };
   test.beforeAll(async ({ browser }, testInfo) => {

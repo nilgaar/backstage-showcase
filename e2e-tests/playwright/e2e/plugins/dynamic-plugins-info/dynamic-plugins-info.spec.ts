@@ -44,7 +44,7 @@ test.describe('dynamic-plugins-info UI tests', () => {
     await page
       .getByPlaceholder('Filter')
       .pressSequentially('backstage-plugin-tech-radar\n', { delay: 300 });
-    const row = await page.locator(
+    const row = page.locator(
       uiHelperPo.rowByText('backstage-plugin-tech-radar'),
     );
     expect(await row.locator('td').nth(2).innerText()).toBe('Yes'); // enabled
@@ -59,7 +59,7 @@ test.describe('dynamic-plugins-info UI tests', () => {
       .pressSequentially('plugin-3scale-backend-dynamic\n', {
         delay: 300,
       });
-    const row = await page.locator(
+    const row = page.locator(
       uiHelperPo.rowByText('backstage-community-plugin-3scale-backend-dynamic'),
     );
     expect(await row.locator('td').nth(2).innerText()).toBe('No'); // not enabled
@@ -73,7 +73,7 @@ test.describe('dynamic-plugins-info UI tests', () => {
     await page
       .getByPlaceholder('Filter')
       .pressSequentially('plugin-todo-list\n', { delay: 300 });
-    const row = await page.locator(
+    const row = page.locator(
       uiHelperPo.rowByText('@internal/plugin-todo-list'),
     );
     expect(await row.locator('td').nth(2).innerText()).toBe('Yes'); // enabled

@@ -2,8 +2,8 @@ import { Page } from '@playwright/test';
 import { UIhelper } from '../../utils/UIhelper';
 
 export class Clusters {
-  private page: Page;
-  private uiHelper: UIhelper;
+  private readonly page: Page;
+  private readonly uiHelper: UIhelper;
 
   constructor(page: Page) {
     this.page = page;

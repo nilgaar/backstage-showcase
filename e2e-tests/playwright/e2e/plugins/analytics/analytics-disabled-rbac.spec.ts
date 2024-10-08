@@ -22,7 +22,7 @@ test.describe('Check RBAC "analytics-provider-segment" plugin', () => {
       .pressSequentially('backstage-plugin-analytics-provider-segment\n', {
         delay: 300,
       });
-    const row = await page.locator(
+    const row = page.locator(
       uiHelperPo.rowByText(
         '@janus-idp/backstage-plugin-analytics-provider-segment',
       ),

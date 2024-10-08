@@ -1,9 +1,9 @@
-import { UIhelper } from './UIhelper';
 import { authenticator } from 'otplib';
 import { test, Browser, expect, Page, TestInfo } from '@playwright/test';
+import path from 'path';
+import { UIhelper } from './UIhelper';
 import { settingsPagePO } from '../support/pageObjects/page-obj';
 import { waitsObjs } from '../support/pageObjects/global-obj';
-import path from 'path';
 
 export class Common {
   page: Page;
@@ -143,7 +143,7 @@ export class Common {
   }
 
   getGitHub2FAOTP(userid: string): string {
-    const secrets: { [key: string]: string | undefined } = {
+    const secrets: Record<string, string | undefined> = {
       [process.env.GH_USER_ID]: process.env.GH_2FA_SECRET,
       [process.env.GH_USER2_ID]: process.env.GH_USER2_2FA_SECRET,
     };

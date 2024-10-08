@@ -20,7 +20,7 @@ test.describe('Learning Paths', () => {
 
     for (let i = 0; i < 5; i++) {
       const learningPathCard = page
-        .locator(`div[class*="MuiGrid-item"]>a[target="_blank"]`)
+        .locator('div[class*="MuiGrid-item"]>a[target="_blank"]')
         .nth(i);
       await expect(learningPathCard).toBeVisible();
       expect(await learningPathCard.getAttribute('href')).not.toBe('');

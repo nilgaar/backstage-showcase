@@ -4,7 +4,7 @@ import { uiHelperPo } from '../../support/pageObjects/global-obj';
 
 export class ThemeVerifier {
   private readonly page: Page;
-  private uiHelper: UIhelper;
+  private readonly uiHelper: UIhelper;
 
   constructor(page: Page) {
     this.page = page;
@@ -17,12 +17,12 @@ export class ThemeVerifier {
   }
 
   async verifyHeaderGradient(expectedGradient: string) {
-    const header = await this.page.locator('main header');
+    const header = this.page.locator('main header');
     await expect(header).toHaveCSS('background-image', expectedGradient);
   }
 
   async verifyBorderLeftColor(expectedColor: string) {
-    const locator = await this.page.locator("a[aria-label='Settings']");
+    const locator = this.page.locator("a[aria-label='Settings']");
     await expect(locator).toHaveCSS(
       'border-left',
       `3px solid ${expectedColor}`,

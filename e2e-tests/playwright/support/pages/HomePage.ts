@@ -1,10 +1,10 @@
+import { Page, expect } from '@playwright/test';
 import { homePagePO } from '../pageObjects/page-obj';
 import { UIhelper } from '../../utils/UIhelper';
-import { Page, expect } from '@playwright/test';
 
 export class HomePage {
-  private page: Page;
-  private uiHelper: UIhelper;
+  private readonly page: Page;
+  private readonly uiHelper: UIhelper;
 
   constructor(page: Page) {
     this.page = page;
@@ -37,7 +37,7 @@ export class HomePage {
     }
 
     const itemLocator = sectionLocator
-      .locator(`a div[class*="MuiListItemText-root"]`)
+      .locator('a div[class*="MuiListItemText-root"]')
       .filter({ hasText: quickAccessItem });
 
     await itemLocator.waitFor({ state: 'visible' });

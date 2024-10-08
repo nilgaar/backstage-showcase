@@ -4,8 +4,8 @@ import { APIHelper } from '../../utils/APIHelper';
 import { uiHelperPo } from '../pageObjects/global-obj';
 
 export class BulkImport {
-  private page: Page;
-  private uiHelper: UIhelper;
+  private readonly page: Page;
+  private readonly uiHelper: UIhelper;
 
   constructor(page: Page) {
     this.page = page;

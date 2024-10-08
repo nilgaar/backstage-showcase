@@ -1,7 +1,7 @@
 import fetch from 'node-fetch';
+import { expect, Page } from '@playwright/test';
 import User from './user';
 import Group from './group';
-import { expect, Page } from '@playwright/test';
 import { UIhelper } from '../UIhelper';
 import { CatalogUsersPO } from '../../support/pageObjects/catalog/catalog-users-obj';
 

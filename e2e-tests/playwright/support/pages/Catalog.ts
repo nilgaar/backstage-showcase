@@ -4,9 +4,9 @@ import playwrightConfig from '../../../playwright.config';
 
 //${BASE_URL}/catalog page
 export class Catalog {
-  private page: Page;
-  private uiHelper: UIhelper;
-  private searchField: Locator;
+  private readonly page: Page;
+  private readonly uiHelper: UIhelper;
+  private readonly searchField: Locator;
 
   constructor(page: Page) {
     this.page = page;
