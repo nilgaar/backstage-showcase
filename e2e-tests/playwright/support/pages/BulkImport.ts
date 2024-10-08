@@ -1,7 +1,7 @@
 import { Page } from '@playwright/test';
 import { UIhelper } from '../../utils/UIhelper';
 import { APIHelper } from '../../utils/APIHelper';
-import { UIhelperPO } from '../pageObjects/global-obj';
+import { uiHelperPo } from '../pageObjects/global-obj';
 
 export class BulkImport {
   private page: Page;
@@ -30,7 +30,7 @@ export class BulkImport {
 
   async selectRepoInTable(repoName: string) {
     await this.page
-      .locator(UIhelperPO.rowByText(repoName))
+      .locator(uiHelperPo.rowByText(repoName))
       .getByRole('checkbox')
       .check();
   }

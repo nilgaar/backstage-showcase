@@ -1,10 +1,10 @@
 import { APIResponse, Page, expect } from '@playwright/test';
 import { UIhelper } from '../../utils/UIhelper';
 import {
-  DeleteRolePO,
-  HomePagePO,
-  RoleFormPO,
-  RoleListPO,
+  deleteRolePO,
+  homePagePO,
+  roleFormPO,
+  roleListPO,
 } from '../pageObjects/page-obj';
 
 export class Roles {
@@ -60,26 +60,26 @@ export class Roles {
 
     await this.uiHelper.verifyHeading('Create role');
 
-    await this.page.fill(RoleFormPO.roleName, name);
+    await this.page.fill(roleFormPO.roleName, name);
     await this.uiHelper.clickButton('Next');
-    await this.page.fill(RoleFormPO.addUsersAndGroups, 'guest user');
-    await this.page.click(RoleFormPO.selectMember('Guest User'));
-    await this.page.fill(RoleFormPO.addUsersAndGroups, 'tara');
-    await this.page.click(RoleFormPO.selectMember('Tara MacGovern'));
-    await this.page.fill(RoleFormPO.addUsersAndGroups, 'Backstage');
-    await this.page.click(RoleFormPO.selectMember('Backstage'));
+    await this.page.fill(roleFormPO.addUsersAndGroups, 'guest user');
+    await this.page.click(roleFormPO.selectMember('Guest User'));
+    await this.page.fill(roleFormPO.addUsersAndGroups, 'tara');
+    await this.page.click(roleFormPO.selectMember('Tara MacGovern'));
+    await this.page.fill(roleFormPO.addUsersAndGroups, 'Backstage');
+    await this.page.click(roleFormPO.selectMember('Backstage'));
     await this.uiHelper.verifyHeading('Users and groups (2 users, 1 group)');
     await this.uiHelper.clickButton('Next');
 
-    await this.page.click(RoleFormPO.selectPermissionPolicyPlugin(0), {
+    await this.page.click(roleFormPO.selectPermissionPolicyPlugin(0), {
       timeout: 100000,
     });
     await this.uiHelper.optionSelector('catalog');
-    await this.page.click(RoleFormPO.selectPermissionPolicyPermission(0), {
+    await this.page.click(roleFormPO.selectPermissionPolicyPermission(0), {
       timeout: 100000,
     });
     await this.uiHelper.optionSelector('catalog-entity');
-    await this.page.uncheck(RoleFormPO.selectPolicy(0, 1, 'Delete'));
+    await this.page.uncheck(roleFormPO.selectPolicy(0, 1, 'Delete'));
 
     await this.uiHelper.clickButton('Next');
 
@@ -89,8 +89,8 @@ export class Roles {
 
     await this.uiHelper.clickButton('Create');
 
-    await this.page.locator(HomePagePO.searchBar).waitFor({ timeout: 60000 });
-    await this.page.locator(HomePagePO.searchBar).fill(name);
+    await this.page.locator(homePagePO.searchBar).waitFor({ timeout: 60000 });
+    await this.page.locator(homePagePO.searchBar).fill(name);
     await this.uiHelper.verifyHeading('All roles (1)');
   }
 
@@ -99,22 +99,22 @@ export class Roles {
 
     await this.uiHelper.verifyHeading('Create role');
 
-    await this.page.fill(RoleFormPO.roleName, name);
+    await this.page.fill(roleFormPO.roleName, name);
     await this.uiHelper.clickButton('Next');
-    await this.page.fill(RoleFormPO.addUsersAndGroups, 'guest user');
-    await this.page.click(RoleFormPO.selectMember('Guest User'));
-    await this.page.fill(RoleFormPO.addUsersAndGroups, 'rhdh-qe');
-    await this.page.click(RoleFormPO.selectMember('rhdh-qe'));
-    await this.page.fill(RoleFormPO.addUsersAndGroups, 'Backstage');
-    await this.page.click(RoleFormPO.selectMember('Backstage'));
+    await this.page.fill(roleFormPO.addUsersAndGroups, 'guest user');
+    await this.page.click(roleFormPO.selectMember('Guest User'));
+    await this.page.fill(roleFormPO.addUsersAndGroups, 'rhdh-qe');
+    await this.page.click(roleFormPO.selectMember('rhdh-qe'));
+    await this.page.fill(roleFormPO.addUsersAndGroups, 'Backstage');
+    await this.page.click(roleFormPO.selectMember('Backstage'));
     await this.uiHelper.verifyHeading('Users and groups (2 users, 1 group)');
     await this.uiHelper.clickButton('Next');
 
-    await this.page.click(RoleFormPO.selectPermissionPolicyPlugin(0), {
+    await this.page.click(roleFormPO.selectPermissionPolicyPlugin(0), {
       timeout: 100000,
     });
     await this.uiHelper.optionSelector('catalog');
-    await this.page.click(RoleFormPO.selectPermissionPolicyPermission(0), {
+    await this.page.click(roleFormPO.selectPermissionPolicyPermission(0), {
       timeout: 100000,
     });
     await this.uiHelper.optionSelector('catalog-entity');
@@ -161,23 +161,23 @@ export class Roles {
 
     await this.uiHelper.verifyHeading('Create role');
 
-    await this.page.fill(RoleFormPO.roleName, name);
+    await this.page.fill(roleFormPO.roleName, name);
     await this.uiHelper.clickButton('Next');
-    await this.page.fill(RoleFormPO.addUsersAndGroups, 'guest user');
-    await this.page.click(RoleFormPO.selectMember('Guest User'));
-    await this.page.fill(RoleFormPO.addUsersAndGroups, 'tara');
-    await this.page.click(RoleFormPO.selectMember('Tara MacGovern'));
-    await this.page.fill(RoleFormPO.addUsersAndGroups, 'Backstage');
-    await this.page.click(RoleFormPO.selectMember('Backstage'));
+    await this.page.fill(roleFormPO.addUsersAndGroups, 'guest user');
+    await this.page.click(roleFormPO.selectMember('Guest User'));
+    await this.page.fill(roleFormPO.addUsersAndGroups, 'tara');
+    await this.page.click(roleFormPO.selectMember('Tara MacGovern'));
+    await this.page.fill(roleFormPO.addUsersAndGroups, 'Backstage');
+    await this.page.click(roleFormPO.selectMember('Backstage'));
     await this.uiHelper.verifyHeading('Users and groups (2 users, 1 group)');
     await this.uiHelper.clickButton('Next');
 
-    await this.page.click(RoleFormPO.selectPermissionPolicyPlugin(0), {
+    await this.page.click(roleFormPO.selectPermissionPolicyPlugin(0), {
       timeout: 100000,
     });
     await this.uiHelper.optionSelector('catalog');
 
-    await this.page.click(RoleFormPO.selectPermissionPolicyPermission(0), {
+    await this.page.click(roleFormPO.selectPermissionPolicyPermission(0), {
       timeout: 100000,
     });
     await this.uiHelper.optionSelector('catalog-entity');
@@ -201,16 +201,16 @@ export class Roles {
 
   async deleteRole(name: string) {
     await this.uiHelper.openSidebar('RBAC');
-    const button = this.page.locator(RoleListPO.deleteRole(name));
+    const button = this.page.locator(roleListPO.deleteRole(name));
     await button.waitFor({ state: 'visible' });
     await button.click();
     await this.uiHelper.verifyHeading('Delete this role?');
-    await this.page.locator(DeleteRolePO.roleName).click();
-    await this.page.fill(DeleteRolePO.roleName, name);
+    await this.page.locator(deleteRolePO.roleName).click();
+    await this.page.fill(deleteRolePO.roleName, name);
     await this.uiHelper.clickButton('Delete');
 
     await this.uiHelper.verifyText(`Role ${name} deleted successfully`);
-    await this.page.locator(HomePagePO.searchBar).fill(name);
+    await this.page.locator(homePagePO.searchBar).fill(name);
     await this.uiHelper.verifyHeading('All roles (0)');
   }
 }
@@ -402,6 +402,7 @@ export class Response {
       data: role,
       headers: {
         authorization: this.authToken,
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         'Content-Type': 'application/json',
       },
     };

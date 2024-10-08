@@ -1,7 +1,7 @@
 import { UIhelper } from './UIhelper';
 import { authenticator } from 'otplib';
 import { test, Browser, expect, Page, TestInfo } from '@playwright/test';
-import { SettingsPagePO } from '../support/pageObjects/page-obj';
+import { settingsPagePO } from '../support/pageObjects/page-obj';
 import { waitsObjs } from '../support/pageObjects/global-obj';
 import path from 'path';
 
@@ -38,8 +38,8 @@ export class Common {
   }
 
   async signOut() {
-    await this.page.click(SettingsPagePO.userSettingsMenu);
-    await this.page.click(SettingsPagePO.signOut);
+    await this.page.click(settingsPagePO.userSettingsMenu);
+    await this.page.click(settingsPagePO.signOut);
     await this.uiHelper.verifyHeading('Select a sign-in method');
   }
 

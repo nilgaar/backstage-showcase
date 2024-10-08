@@ -1,13 +1,13 @@
 export const defaultCatalogInfoYaml = (
   componentName: string,
-  project_slug: string,
+  projectSlug: string,
   user: string,
 ) => `apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: ${componentName}
   annotations:
-    github.com/project-slug: ${project_slug}
+    github.com/project-slug: ${projectSlug}
 spec:
   type: other
   lifecycle: unknown
@@ -16,7 +16,7 @@ spec:
 
 export const updatedCatalogInfoYaml = (
   componentName: string,
-  project_slug: string,
+  projectSlug: string,
   labels: string,
   user: string,
 ) => `apiVersion: backstage.io/v1alpha1
@@ -24,7 +24,7 @@ kind: Component
 metadata:
   name: ${componentName}
   annotations:
-    github.com/project-slug: ${project_slug}
+    github.com/project-slug: ${projectSlug}
   labels:
     ${labels.split(';')[0]}
     ${labels.split(';')[1]}

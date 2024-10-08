@@ -1,10 +1,10 @@
-export class getOrganizationResponse {
+export class GetOrganizationResponse {
   reposUrl: string;
   constructor(response: any) {
     enum OrganizationResponseAttributes {
-      ReposUrl = 'repos_url',
+      reposUrl = 'repos_url',
     }
-    this.reposUrl = response[OrganizationResponseAttributes.ReposUrl];
+    this.reposUrl = response[OrganizationResponseAttributes.reposUrl];
   }
 }
 

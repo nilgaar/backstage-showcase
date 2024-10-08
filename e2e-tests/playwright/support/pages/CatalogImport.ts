@@ -1,6 +1,6 @@
 import { Page, expect } from '@playwright/test';
 import { UIhelper } from '../../utils/UIhelper';
-import { BackstageShowcasePO, CatalogImportPO } from '../pageObjects/page-obj';
+import { backstageShowcasePO, catalogImportPO } from '../pageObjects/page-obj';
 import { APIHelper } from '../../utils/APIHelper';
 import { githubAPIEndpoints } from '../../utils/APIEndpoints';
 
@@ -16,7 +16,7 @@ export class CatalogImport {
     url: string,
     clickViewComponent: boolean = true,
   ) {
-    await this.page.fill(CatalogImportPO.componentURL, url);
+    await this.page.fill(catalogImportPO.componentURL, url);
     await this.uiHelper.clickButton('Analyze');
 
     // Wait for the visibility of either 'Refresh' or 'Import' button
@@ -30,7 +30,7 @@ export class CatalogImport {
   }
 
   async analyzeComponent(url: string) {
-    await this.page.fill(CatalogImportPO.componentURL, url);
+    await this.page.fill(catalogImportPO.componentURL, url);
     await this.uiHelper.clickButton('Analyze');
   }
 
@@ -72,19 +72,19 @@ export class BackstageShowcase {
   }
 
   async clickNextPage() {
-    await this.page.click(BackstageShowcasePO.tableNextPage);
+    await this.page.click(backstageShowcasePO.tableNextPage);
   }
 
   async clickPreviousPage() {
-    await this.page.click(BackstageShowcasePO.tablePreviousPage);
+    await this.page.click(backstageShowcasePO.tablePreviousPage);
   }
 
   async clickLastPage() {
-    await this.page.click(BackstageShowcasePO.tableLastPage);
+    await this.page.click(backstageShowcasePO.tableLastPage);
   }
 
   async clickFirstPage() {
-    await this.page.click(BackstageShowcasePO.tableFirstPage);
+    await this.page.click(backstageShowcasePO.tableFirstPage);
   }
 
   async verifyPRRowsPerPage(rows, allPRs) {
@@ -95,12 +95,12 @@ export class BackstageShowcase {
       notVisible: false,
     });
 
-    const tableRows = this.page.locator(BackstageShowcasePO.tableRows);
+    const tableRows = this.page.locator(backstageShowcasePO.tableRows);
     await expect(tableRows).toHaveCount(rows);
   }
 
   async selectRowsPerPage(rows: number) {
-    await this.page.click(BackstageShowcasePO.tablePageSelectBox);
+    await this.page.click(backstageShowcasePO.tablePageSelectBox);
     await this.page.click(`ul[role="listbox"] li[data-value="${rows}"]`);
   }
 

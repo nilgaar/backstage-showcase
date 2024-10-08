@@ -1,7 +1,7 @@
 import { Page } from '@playwright/test';
 
 export class CatalogUsersPO {
-  static BASE_URL = '/catalog?filters%5Bkind%5D=user&filters%5Buser';
+  static baseUrl = '/catalog?filters%5Bkind%5D=user&filters%5Buser';
 
   static async getListOfUsers(page: Page) {
     return page.locator('a[href*="/catalog/default/user"]');
@@ -20,6 +20,6 @@ export class CatalogUsersPO {
   }
 
   static async visitBaseURL(page: Page) {
-    await page.goto(this.BASE_URL);
+    await page.goto(this.baseUrl);
   }
 }

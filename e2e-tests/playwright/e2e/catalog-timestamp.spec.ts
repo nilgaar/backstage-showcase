@@ -2,7 +2,7 @@ import { Page, expect, test } from '@playwright/test';
 import { UIhelper } from '../utils/UIhelper';
 import { Common, setupBrowser } from '../utils/Common';
 import { CatalogImport } from '../support/pages/CatalogImport';
-import { UIhelperPO } from '../support/pageObjects/global-obj';
+import { uiHelperPo } from '../support/pageObjects/global-obj';
 
 let page: Page;
 test.describe('Test timestamp column on Catalog', () => {
@@ -50,7 +50,7 @@ test.describe('Test timestamp column on Catalog', () => {
     await expect(page.locator(createdAtFirstRow)).toBeEmpty();
 
     const column = page
-      .locator(`${UIhelperPO.MuiTableHead}`)
+      .locator(`${uiHelperPo.muiTableHead}`)
       .getByText('Created At', { exact: true });
     await column.dblclick(); // Double click to Toggle into decending order.
     await expect(page.locator(createdAtFirstRow)).not.toBeEmpty();

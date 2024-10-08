@@ -13,8 +13,9 @@ export class APIHelper {
     const options: any = {
       method: method,
       headers: {
-        Accept: 'application/vnd.github+json',
-        Authorization: `Bearer ${process.env.GH_RHDH_QE_USER_TOKEN}`,
+        accept: 'application/vnd.github+json',
+        authorization: `Bearer ${process.env.GH_RHDH_QE_USER_TOKEN}`,
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         'X-GitHub-Api-Version': this.githubAPIVersion,
       },
     };
@@ -86,11 +87,11 @@ export class APIHelper {
   static async mergeGitHubPR(
     owner: string,
     repoName: string,
-    pull_number: number,
+    pullNumber: number,
   ) {
     await APIHelper.githubRequest(
       'PUT',
-      githubAPIEndpoints.mergePR(owner, repoName, pull_number),
+      githubAPIEndpoints.mergePR(owner, repoName, pullNumber),
     );
   }
 
@@ -116,15 +117,15 @@ export class APIHelper {
   ): Promise<string> {
     const response = await APIHelper.githubRequest(
       'GET',
-      githubAPIEndpoints.pull_files(owner, repoName, pr),
+      githubAPIEndpoints.pullFiles(owner, repoName, pr),
     );
-    const file_raw_url = (await response.json()).find(
+    const fileRawUrl = (await response.json()).find(
       (file: { filename: string }) => file.filename === filename,
     ).raw_url;
-    const raw_file_content = await (
-      await APIHelper.githubRequest('GET', file_raw_url)
+    const rawFileContent = await (
+      await APIHelper.githubRequest('GET', fileRawUrl)
     ).text();
-    return raw_file_content;
+    return rawFileContent;
   }
 
   async getGuestToken(): Promise<string> {
@@ -138,7 +139,7 @@ export class APIHelper {
   async getGuestAuthHeader(): Promise<{ [key: string]: string }> {
     const token = await this.getGuestToken();
     const headers = {
-      Authorization: `Bearer ${token}`,
+      authorization: `Bearer ${token}`,
     };
     return headers;
   }

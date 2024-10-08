@@ -1,25 +1,25 @@
 export const waitsObjs = {
-  MuiLinearProgress: 'div[class*="MuiLinearProgress-root"]',
-  MuiCircularProgress: '[class*="MuiCircularProgress-root"]',
+  muiLinearProgress: 'div[class*="MuiLinearProgress-root"]',
+  muiCircularProgress: '[class*="MuiCircularProgress-root"]',
 };
 
-export const UIhelperPO = {
-  MuiButtonLabel: 'span[class^="MuiButton-label"]',
-  MuiToggleButtonLabel: 'span[class^="MuiToggleButton-label"]',
-  MuiBoxLabel: 'div[class*="MuiBox-root"] label',
-  MuiTableHead: 'th[class*="MuiTableCell-root"]',
-  MuiTableCell: 'td[class*="MuiTableCell-root"]',
-  MuiTableRow: 'tr[class*="MuiTableRow-root"]',
-  MuiTypographyColorPrimary: '.MuiTypography-colorPrimary',
-  MuiSwitchColorPrimary: '.MuiSwitch-colorPrimary',
-  MuiButtonTextPrimary: '.MuiButton-textPrimary',
-  MuiCard: cardHeading =>
+export const uiHelperPo = {
+  muiButtonLabel: 'span[class^="MuiButton-label"]',
+  muiToggleButtonLabel: 'span[class^="MuiToggleButton-label"]',
+  muiBoxLabel: 'div[class*="MuiBox-root"] label',
+  muiTableHead: 'th[class*="MuiTableCell-root"]',
+  muiTableCell: 'td[class*="MuiTableCell-root"]',
+  muiTableRow: 'tr[class*="MuiTableRow-root"]',
+  muiTypographyColorPrimary: '.MuiTypography-colorPrimary',
+  muiSwitchColorPrimary: '.MuiSwitch-colorPrimary',
+  muiButtonTextPrimary: '.MuiButton-textPrimary',
+  muiCard: cardHeading =>
     `//div[contains(@class,'MuiCardHeader-root') and descendant::*[text()='${cardHeading}']]/..`,
-  MuiTable: 'table.MuiTable-root',
-  MuiCardHeader: 'div[class*="MuiCardHeader-root"]',
-  MuiInputBase: 'div[class*="MuiInputBase-root"]',
-  MuiTypography: 'span[class*="MuiTypography-root"]',
-  MuiAlert: 'div[class*="MuiAlert-message"]',
+  muiTable: 'table.MuiTable-root',
+  muiCardHeader: 'div[class*="MuiCardHeader-root"]',
+  muiInputBase: 'div[class*="MuiInputBase-root"]',
+  muiTypography: 'span[class*="MuiTypography-root"]',
+  muiAlert: 'div[class*="MuiAlert-message"]',
   tabs: '[role="tab"]',
   rowByText: (text: string) => `tr:has(:text-is("${text}"))`,
 };

@@ -18,12 +18,12 @@ export const githubAPIEndpoints = {
 
   deleteRepo: getRepoUrl,
 
-  mergePR: (owner: string, repoName: string, pull_number: number) =>
-    `${getRepoUrl(owner, repoName)}/pulls/${pull_number}/merge`,
+  mergePR: (owner: string, repoName: string, pullNumber: number) =>
+    `${getRepoUrl(owner, repoName)}/pulls/${pullNumber}/merge`,
 
   createRepo: (owner: string) => `${getOrgUrl(owner)}/repos`,
 
-  pull_files: (owner: string, repoName: string, pr: number) =>
+  pullFiles: (owner: string, repoName: string, pr: number) =>
     `${getRepoUrl(owner, repoName)}/pulls/${pr}/files`,
 
   contents: (owner: string, repoName: string) =>

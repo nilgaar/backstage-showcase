@@ -6,7 +6,7 @@ import { UIhelper } from '../UIhelper';
 import { CatalogUsersPO } from '../../support/pageObjects/catalog/catalog-users-obj';
 
 interface AuthResponse {
-  access_token: string;
+  accessToken: string;
 }
 class Keycloak {
   private readonly baseURL: string;
@@ -26,18 +26,19 @@ class Keycloak {
       `${this.baseURL}/realms/${this.realm}/protocol/openid-connect/token`,
       {
         method: 'POST',
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: new URLSearchParams({
-          grant_type: 'client_credentials',
-          client_id: this.clientId,
-          client_secret: this.clientSecret,
+          grantType: 'client_credentials',
+          clientId: this.clientId,
+          clientSecret: this.clientSecret,
         }).toString(),
       },
     );
 
     if (response.status !== 200) throw new Error('Failed to authenticate');
     const data = (await response.json()) as AuthResponse;
-    return data.access_token;
+    return data.accessToken;
   }
 
   async getUsers(authToken: string): Promise<User[]> {
@@ -46,7 +47,7 @@ class Keycloak {
       {
         method: 'GET',
         headers: {
-          Authorization: `Bearer ${authToken}`,
+          authorization: `Bearer ${authToken}`,
         },
       },
     );
@@ -61,7 +62,7 @@ class Keycloak {
       {
         method: 'GET',
         headers: {
-          Authorization: `Bearer ${authToken}`,
+          authorization: `Bearer ${authToken}`,
         },
       },
     );
