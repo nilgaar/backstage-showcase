@@ -4,13 +4,13 @@ import { JANUS_ORG } from '../../utils/constants';
 
 // https://docs.github.com/en/rest?apiVersion=2022-11-28
 export default class GithubApi {
-  private static readonly apiUrl = 'https://api.github.com';
-  private static readonly apiVersion = '2022-11-28';
-  private static readonly authHeader = {
+  private readonly apiUrl = 'https://api.github.com';
+  private readonly apiVersion = '2022-11-28';
+  private readonly authHeader = {
     accept: 'application/vnd.github+json',
     authorization: `Bearer ${process.env.GH_RHDH_QE_USER_TOKEN}`,
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    'X-GitHub-Api-Version': GithubApi.apiVersion,
+    'X-GitHub-Api-Version': this.apiVersion,
   };
 
   public async getOrganization(
@@ -35,8 +35,8 @@ export default class GithubApi {
   }
 
   private readonly _myContext = request.newContext({
-    baseURL: GithubApi.apiUrl,
-    extraHTTPHeaders: GithubApi.authHeader,
+    baseURL: this.apiUrl,
+    extraHTTPHeaders: this.authHeader,
   });
 
   private _repo(repo: string) {
