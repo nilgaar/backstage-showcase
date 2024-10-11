@@ -24,7 +24,7 @@ const cred: Credentials = {
 
 export async function initializeRHSSOClient(
   connectionConfig: ConnectionConfig,
-) {
+): Promise<void> {
   // Ensure settings isn't null
   if (!connectionConfig) {
     logger.error('RHSSO config cannot be undefined');

@@ -23,7 +23,7 @@ export class BulkImport {
     await this.page.getByPlaceholder('Filter').fill(searchText);
   }
 
-  async newGitHubRepo(owner: string, repoName: string) {
+  static async newGitHubRepo(owner: string, repoName: string) {
     await APIHelper.createGitHubRepo(owner, repoName);
     await APIHelper.initCommit(owner, repoName);
   }

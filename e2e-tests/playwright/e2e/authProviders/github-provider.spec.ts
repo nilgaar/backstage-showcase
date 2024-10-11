@@ -6,7 +6,7 @@ import * as constants from '../../utils/authenticationProviders/constants';
 import { logger } from '../../utils/Logger';
 import {
   upgradeHelmChartWithWait,
-  WaitForNextSync,
+  waitForNextSync,
   replaceInRBACPolicyFileConfigMap,
 } from '../../utils/helper';
 import * as ghHelper from '../../utils/authenticationProviders/githubHelper';
@@ -64,7 +64,7 @@ test.describe('Standard authentication providers: Github Provider', () => {
       ],
     );
 
-    await WaitForNextSync(SYNC_TIME, 'github');
+    await waitForNextSync(SYNC_TIME, 'github');
   });
 
   test('Github with default resolver: user should login and entity is in the catalog', async () => {
@@ -76,7 +76,7 @@ test.describe('Standard authentication providers: Github Provider', () => {
     );
     test.setTimeout(300 * 1000);
     if (test.info().retry > 0) {
-      await WaitForNextSync(SYNC_TIME, 'github');
+      await waitForNextSync(SYNC_TIME, 'github');
     }
 
     await page.goto('/');
@@ -104,7 +104,7 @@ test.describe('Standard authentication providers: Github Provider', () => {
   test('Ingestion of Users and Nested Groups: verify the UserEntities and Groups are created with the correct relationships in RHDH ', async () => {
     test.setTimeout(300 * 1000);
     if (test.info().retry > 0) {
-      await WaitForNextSync(SYNC_TIME, 'github');
+      await waitForNextSync(SYNC_TIME, 'github');
     }
     await common.githubLogin(
       constants.GH_USERS['admin'].name,
@@ -115,44 +115,44 @@ test.describe('Standard authentication providers: Github Provider', () => {
     const usersDisplayNames = Object.values(constants.GH_USERS).map(
       u => u.name,
     );
-    await common.CheckUserIsShowingInCatalog(usersDisplayNames);
+    await common.checkUserIsShowingInCatalog(usersDisplayNames);
 
     // check groups are nested correctly and display all members
     const groupsDisplayNames = Object.values(constants.GH_TEAMS).map(
       g => g.name,
     );
-    await common.CheckGroupIsShowingInCatalog(groupsDisplayNames);
+    await common.checkGroupIsShowingInCatalog(groupsDisplayNames);
 
     let displayed;
 
     // check team1
-    displayed = await common.GoToGroupPageAndGetDisplayedData(
+    displayed = await common.goToGroupPageAndGetDisplayedData(
       constants.GH_TEAMS['team_1'].name,
     );
     expect(displayed.groupMembers).toContain(constants.GH_USERS['admin'].name);
 
     // check team2
-    displayed = await common.GoToGroupPageAndGetDisplayedData(
+    displayed = await common.goToGroupPageAndGetDisplayedData(
       constants.GH_TEAMS['team_2'].name,
     );
     expect(displayed.groupMembers).toEqual([]);
     expect(displayed.childGroups).toContain(constants.GH_TEAMS['team_3'].name);
 
     // check team3
-    displayed = await common.GoToGroupPageAndGetDisplayedData(
+    displayed = await common.goToGroupPageAndGetDisplayedData(
       constants.GH_TEAMS['team_3'].name,
     );
     expect(displayed.groupMembers).toContain(constants.GH_USERS['user_1'].name);
     expect(displayed.parentGroup).toContain(constants.GH_TEAMS['team_2'].name);
 
     // check team4
-    displayed = await common.GoToGroupPageAndGetDisplayedData(
+    displayed = await common.goToGroupPageAndGetDisplayedData(
       constants.GH_TEAMS['team_4'].name,
     );
     expect(displayed.groupMembers).toContain(constants.GH_USERS['user_1'].name);
 
     // check location_admin
-    displayed = await common.GoToGroupPageAndGetDisplayedData(
+    displayed = await common.goToGroupPageAndGetDisplayedData(
       constants.GH_TEAMS['location_admin'].name,
     );
     expect(displayed.groupMembers).toContain(constants.GH_USERS['admin'].name);
@@ -165,7 +165,7 @@ test.describe('Standard authentication providers: Github Provider', () => {
   test('Remove a user from RHDH', async () => {
     test.setTimeout(300 * 1000);
     if (test.info().retry > 0) {
-      await WaitForNextSync(SYNC_TIME, 'github');
+      await waitForNextSync(SYNC_TIME, 'github');
     }
     // remove user from RHDH -> authentication works, access is broken
     logger.info(
@@ -178,14 +178,14 @@ test.describe('Standard authentication providers: Github Provider', () => {
     );
     logger.info('Unregistering user1 from catalog');
 
-    await common.UnregisterUserEnittyFromCatalog(
+    await common.unregisterUserEnittyFromCatalog(
       constants.GH_USERS['user_1'].name,
     );
     logger.info('Checking alert message after login');
     await uiHelper.verifyAlertErrorMessage(/Removed entity/gm);
 
     await expect(async () => {
-      await common.CheckUserIsShowingInCatalog([
+      await common.checkUserIsShowingInCatalog([
         constants.GH_USERS['user_1'].name,
       ]);
     }).not.toPass({
@@ -208,7 +208,7 @@ test.describe('Standard authentication providers: Github Provider', () => {
     await context.clearCookies();
 
     // waiting for next sync
-    await WaitForNextSync(SYNC_TIME, 'github');
+    await waitForNextSync(SYNC_TIME, 'github');
 
     // after sync, user_4 is created again and can login
     logger.info(
@@ -227,7 +227,7 @@ test.describe('Standard authentication providers: Github Provider', () => {
   test('Remove a group from RHDH', async () => {
     test.setTimeout(300 * 1000);
     if (test.info().retry > 0) {
-      await WaitForNextSync(SYNC_TIME, 'github');
+      await waitForNextSync(SYNC_TIME, 'github');
     }
 
     // remove group from RHDH -> user can login, but policy is broken
@@ -239,13 +239,13 @@ test.describe('Standard authentication providers: Github Provider', () => {
       constants.GH_USERS['admin'].name,
       constants.GH_USER_PASSWORD,
     );
-    await common.UnregisterGroupEnittyFromCatalog(
+    await common.unregisterGroupEnittyFromCatalog(
       constants.GH_TEAMS['team_1'].name,
     );
     await uiHelper.verifyAlertErrorMessage(/Removed entity/gm);
 
     await expect(async () => {
-      await common.CheckGroupIsShowingInCatalog([
+      await common.checkGroupIsShowingInCatalog([
         constants.GH_TEAMS['team_1'].name,
       ]);
     }).not.toPass({
@@ -254,7 +254,7 @@ test.describe('Standard authentication providers: Github Provider', () => {
     });
 
     // waiting for next sync
-    await WaitForNextSync(SYNC_TIME, 'github');
+    await waitForNextSync(SYNC_TIME, 'github');
 
     // after sync, ensure group is created again and memembers can login
     logger.info(
@@ -263,7 +263,7 @@ test.describe('Standard authentication providers: Github Provider', () => {
 
     await page.reload();
 
-    await common.CheckGroupIsShowingInCatalog([
+    await common.checkGroupIsShowingInCatalog([
       constants.GH_TEAMS['team_1'].name,
     ]);
     await uiHelper.openSidebar('Settings');
@@ -274,7 +274,7 @@ test.describe('Standard authentication providers: Github Provider', () => {
   test('Move a user to another group in Github', async () => {
     test.setTimeout(300 * 1000);
     if (test.info().retry > 0) {
-      await WaitForNextSync(SYNC_TIME, 'github');
+      await waitForNextSync(SYNC_TIME, 'github');
     }
     // move a user to another group -> ensure user can still login
     logger.info(
@@ -314,7 +314,7 @@ test.describe('Standard authentication providers: Github Provider', () => {
     await uiHelper.openSidebar('Settings');
     await common.signOut();
 
-    await WaitForNextSync(SYNC_TIME, 'github');
+    await waitForNextSync(SYNC_TIME, 'github');
 
     // ensure the change is mirrored in the catalog
     logger.info(
@@ -325,7 +325,7 @@ test.describe('Standard authentication providers: Github Provider', () => {
       constants.GH_USER_PASSWORD,
     );
 
-    const displayed = await common.GoToGroupPageAndGetDisplayedData(
+    const displayed = await common.goToGroupPageAndGetDisplayedData(
       constants.GH_TEAMS['location_admin'].name,
     );
     expect(displayed.groupMembers).toContain(constants.GH_USERS['user_1'].name);
@@ -344,7 +344,7 @@ test.describe('Standard authentication providers: Github Provider', () => {
   test('Remove a group from Github', async () => {
     test.setTimeout(300 * 1000);
     if (test.info().retry > 0) {
-      await WaitForNextSync(SYNC_TIME, 'github');
+      await waitForNextSync(SYNC_TIME, 'github');
     }
     // remove a group -> members still exists, member should still login
     logger.info(
@@ -362,13 +362,13 @@ test.describe('Standard authentication providers: Github Provider', () => {
     );
 
     // team should exist in rhdh
-    const displayed = await common.GoToGroupPageAndGetDisplayedData(
+    const displayed = await common.goToGroupPageAndGetDisplayedData(
       constants.GH_TEAMS['team_4'].name,
     );
     expect(displayed.groupMembers).toContain(constants.GH_USERS['user_1'].name);
 
     // waiting for next sync
-    await WaitForNextSync(SYNC_TIME, 'github');
+    await waitForNextSync(SYNC_TIME, 'github');
 
     // after the sync ensure the group entity is removed
     logger.info(
@@ -376,7 +376,7 @@ test.describe('Standard authentication providers: Github Provider', () => {
     );
 
     await expect(
-      common.CheckGroupIsShowingInCatalog([constants.GH_USERS['user_1'].name]),
+      common.checkGroupIsShowingInCatalog([constants.GH_USERS['user_1'].name]),
     ).rejects.toThrow();
 
     await page.goto('/');
@@ -404,7 +404,7 @@ test.describe('Standard authentication providers: Github Provider', () => {
   test('Rename a user and a group', async () => {
     test.setTimeout(600 * 1000);
     if (test.info().retry > 0) {
-      await WaitForNextSync(SYNC_TIME, 'github');
+      await waitForNextSync(SYNC_TIME, 'github');
     }
     // rename group from RHDH -> user can login, but policy is broken
     logger.info('Executing testcase: Rename a user and a group.');
@@ -425,7 +425,7 @@ test.describe('Standard authentication providers: Github Provider', () => {
     );
 
     // waiting for next sync
-    await WaitForNextSync(SYNC_TIME, 'github');
+    await waitForNextSync(SYNC_TIME, 'github');
 
     // after sync, ensure group is mirrored
     logger.info(
@@ -436,7 +436,7 @@ test.describe('Standard authentication providers: Github Provider', () => {
       constants.GH_USER_PASSWORD,
     );
 
-    await common.CheckGroupIsShowingInCatalog([
+    await common.checkGroupIsShowingInCatalog([
       constants.GH_TEAMS['team_2'].name + '_renamed',
     ]);
     await uiHelper.openSidebar('Settings');

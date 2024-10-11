@@ -220,7 +220,7 @@ export class Common {
               'button.js-oauth-authorize-btn',
             );
             if (await authorization.isVisible()) {
-              authorization.click();
+              await authorization.click();
               resolve('Login successful with app authorization');
             } else {
               throw e;
@@ -231,7 +231,7 @@ export class Common {
     });
   }
 
-  async MicrosoftAzureLogin(username: string, password: string) {
+  async microsoftAzureLogin(username: string, password: string) {
     await this.page.goto('/');
     await this.page.waitForSelector('p:has-text("Sign in using Microsoft")');
     await this.uiHelper.clickButton('Sign In');
@@ -270,25 +270,25 @@ export class Common {
     });
   }
 
-  async GetParentGroupDisplayed(): Promise<string[]> {
+  async getParentGroupDisplayed(): Promise<string[]> {
     await this.page.waitForSelector('p:has-text(\'Parent Group\')');
-    const parent = await this.page
+    const parent = this.page
       .locator('p:has-text(\'Parent Group\')')
       .locator('..');
     const group = await parent.locator('a').allInnerTexts();
     return group;
   }
 
-  async GetChildGroupsDisplayed(): Promise<string[]> {
+  async getChildGroupsDisplayed(): Promise<string[]> {
     await this.page.waitForSelector('p:has-text(\'Child Groups\')');
-    const parent = await this.page
+    const parent = this.page
       .locator('p:has-text(\'Child Groups\')')
       .locator('..');
     const groups = await parent.locator('a').allInnerTexts();
     return groups;
   }
 
-  async GetMembersOfGroupDisplayed(): Promise<string[]> {
+  async getMembersOfGroupDisplayed(): Promise<string[]> {
     await this.page.waitForSelector('//div[contains(., "Members")]/..');
     const membersCard = this.page
       .locator(
@@ -298,7 +298,7 @@ export class Common {
     return membersCard;
   }
 
-  async GoToGroupPageAndGetDisplayedData(groupDisplayName: string) {
+  async goToGroupPageAndGetDisplayedData(groupDisplayName: string) {
     await this.page.goto(
       '/catalog?filters%5Bkind%5D=group&filters%5Buser%5D=all',
     );
@@ -310,9 +310,9 @@ export class Common {
     await this.uiHelper.clickLink(groupDisplayName);
     await this.uiHelper.verifyHeading(groupDisplayName);
 
-    const childGroups = await this.GetChildGroupsDisplayed();
-    const parentGroup = await this.GetParentGroupDisplayed();
-    const groupMembers = await this.GetMembersOfGroupDisplayed();
+    const childGroups = await this.getChildGroupsDisplayed();
+    const parentGroup = await this.getParentGroupDisplayed();
+    const groupMembers = await this.getMembersOfGroupDisplayed();
     return {
       childGroups,
       parentGroup,
@@ -320,7 +320,7 @@ export class Common {
     };
   }
 
-  async UnregisterUserEnittyFromCatalog(user: string) {
+  async unregisterUserEnittyFromCatalog(user: string) {
     await this.page.goto('/');
     await this.uiHelper.openSidebar('Catalog');
     await this.uiHelper.selectMuiBox('Kind', 'User');
@@ -332,7 +332,7 @@ export class Common {
     await this.uiHelper.clickUnregisterButtonForDisplayedEntity();
   }
 
-  async UnregisterGroupEnittyFromCatalog(group: string) {
+  async unregisterGroupEnittyFromCatalog(group: string) {
     await this.page.goto('/');
     await this.uiHelper.openSidebar('Catalog');
     await this.uiHelper.selectMuiBox('Kind', 'Group');
@@ -344,7 +344,7 @@ export class Common {
     await this.uiHelper.clickUnregisterButtonForDisplayedEntity();
   }
 
-  async CheckGroupIsShowingInCatalog(groups: string[]) {
+  async checkGroupIsShowingInCatalog(groups: string[]) {
     await this.page.goto(
       '/catalog?filters%5Bkind%5D=group&filters%5Buser%5D=all',
     );
@@ -356,7 +356,7 @@ export class Common {
     await this.uiHelper.verifyCellsInTable(groups);
   }
 
-  async CheckUserIsShowingInCatalog(users: string[]) {
+  async checkUserIsShowingInCatalog(users: string[]) {
     await this.page.goto(
       '/catalog?filters%5Bkind%5D=user&filters%5Buser%5D=all',
     );

@@ -29,7 +29,9 @@ test.describe('Github Discovery Catalog', () => {
     testOrganization,
   }) => {
     const organizationRepos = await githubApi.getReposFromOrg(testOrganization);
-    const reposNames: string[] = organizationRepos.map(repo => repo['name']);
+    const reposNames: string[] = organizationRepos.map(
+      (repo: { name: string }) => repo['name'],
+    );
     const realComponents: string[] = reposNames.filter(
       async repo =>
         await githubApi.fileExistsOnRepo(

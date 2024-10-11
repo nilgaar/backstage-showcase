@@ -352,7 +352,7 @@ export async function setupMicrosoftEntraIDEnvironment(): Promise<{
   const groupsCreated = new Map<string, Group>();
 
   try {
-    await initializeGraphForAppOnlyAuth(constants.MSGRAPH_SETTINGS);
+    initializeGraphForAppOnlyAuth(constants.MSGRAPH_SETTINGS);
     logger.info('Setting up users and groups in Microsoft EntraID');
 
     // explictily remove the renamed user and group to avoid inconsistencies

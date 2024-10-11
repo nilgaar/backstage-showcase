@@ -9,7 +9,7 @@ import { logger } from '../../utils/Logger';
 import * as graphHelper from '../../utils/authenticationProviders/msgraphHelper';
 import {
   upgradeHelmChartWithWait,
-  WaitForNextSync,
+  waitForNextSync,
   replaceInRBACPolicyFileConfigMap,
 } from '../../utils/helper';
 
@@ -87,7 +87,7 @@ test.describe('Standard authentication providers: Micorsoft Azure EntraID', () =
       oidcFlow ? oidcFlags : oauthFlags,
     );
 
-    await WaitForNextSync(SYNC_TIME, 'microsoft');
+    await waitForNextSync(SYNC_TIME, 'microsoft');
   });
 
   test('Microsoft EntraID with default resolver: user_1 should login and entity is in the catalog', async () => {
@@ -99,10 +99,10 @@ test.describe('Standard authentication providers: Micorsoft Azure EntraID', () =
     );
     test.setTimeout(300 * 1000);
     if (test.info().retry > 0) {
-      await WaitForNextSync(SYNC_TIME, 'microsoft');
+      await waitForNextSync(SYNC_TIME, 'microsoft');
     }
 
-    await common.MicrosoftAzureLogin(
+    await common.microsoftAzureLogin(
       constants.MSGRAPH_USERS['user_1'].userPrincipalName,
       constants.RHSSO76_DEFAULT_PASSWORD,
     );
@@ -121,9 +121,9 @@ test.describe('Standard authentication providers: Micorsoft Azure EntraID', () =
 
   test('Ingestion of Users and Nested Groups: verify the UserEntities and Groups are created with the correct relationships in RHDH ', async () => {
     test.setTimeout(300 * 1000);
-    await WaitForNextSync(SYNC_TIME, 'microsoft');
+    await waitForNextSync(SYNC_TIME, 'microsoft');
 
-    await common.MicrosoftAzureLogin(
+    await common.microsoftAzureLogin(
       constants.MSGRAPH_USERS['admin'].userPrincipalName,
       constants.RHSSO76_DEFAULT_PASSWORD,
     );
@@ -132,18 +132,18 @@ test.describe('Standard authentication providers: Micorsoft Azure EntraID', () =
     const usersDisplayNames = Object.values(constants.MSGRAPH_USERS).map(
       u => u.displayName,
     );
-    await common.CheckUserIsShowingInCatalog(usersDisplayNames);
+    await common.checkUserIsShowingInCatalog(usersDisplayNames);
 
     // check groups are nested correctly and display all members
     const groupsDisplayNames = Object.values(constants.MSGRAPH_GROUPS).map(
       g => g.displayName,
     );
-    await common.CheckGroupIsShowingInCatalog(groupsDisplayNames);
+    await common.checkGroupIsShowingInCatalog(groupsDisplayNames);
 
     let displayed;
 
     // group_1 should show jenny_doe and user_1
-    displayed = await common.GoToGroupPageAndGetDisplayedData(
+    displayed = await common.goToGroupPageAndGetDisplayedData(
       constants.MSGRAPH_GROUPS['group_1'].displayName,
     );
     expect(displayed.groupMembers).toContain(
@@ -155,7 +155,7 @@ test.describe('Standard authentication providers: Micorsoft Azure EntraID', () =
     expect(displayed.childGroups).toHaveLength(0);
 
     // group_2 should show jenny_doe and user_2 and parent group: group_4
-    displayed = await common.GoToGroupPageAndGetDisplayedData(
+    displayed = await common.goToGroupPageAndGetDisplayedData(
       constants.MSGRAPH_GROUPS['group_2'].displayName,
     );
     expect(displayed.groupMembers).toContain(
@@ -166,7 +166,7 @@ test.describe('Standard authentication providers: Micorsoft Azure EntraID', () =
     );
 
     // group_3 should show user_3 and parent group: group_4
-    displayed = await common.GoToGroupPageAndGetDisplayedData(
+    displayed = await common.goToGroupPageAndGetDisplayedData(
       constants.MSGRAPH_GROUPS['group_3'].displayName,
     );
     expect(displayed.groupMembers).toContain(
@@ -177,7 +177,7 @@ test.describe('Standard authentication providers: Micorsoft Azure EntraID', () =
     );
 
     // group_4 should show user_4 and two child groups: group_2 and group_3
-    displayed = await common.GoToGroupPageAndGetDisplayedData(
+    displayed = await common.goToGroupPageAndGetDisplayedData(
       constants.MSGRAPH_GROUPS['group_4'].displayName,
     );
     expect(displayed.groupMembers).toContain(
@@ -195,7 +195,7 @@ test.describe('Standard authentication providers: Micorsoft Azure EntraID', () =
   test('Remove user from Microsoft EntraID', async () => {
     test.setTimeout(300 * 1000);
     if (test.info().retry > 0) {
-      await WaitForNextSync(SYNC_TIME, 'microsoft');
+      await waitForNextSync(SYNC_TIME, 'microsoft');
     }
 
     // remove user from azure -> authentication fails
@@ -212,7 +212,7 @@ test.describe('Standard authentication providers: Micorsoft Azure EntraID', () =
 
     await page.waitForTimeout(10000); // Azure needs a couple of seconds to process the user deletion or random errors will be returned
 
-    const login = await common.MicrosoftAzureLogin(
+    const login = await common.microsoftAzureLogin(
       constants.MSGRAPH_USERS['user_1'].userPrincipalName,
       constants.RHSSO76_DEFAULT_PASSWORD,
     );
@@ -225,23 +225,23 @@ test.describe('Standard authentication providers: Micorsoft Azure EntraID', () =
     await context.clearCookies(); // If we don't clear cookies, Microsoft Login popup will present the last logger user
 
     // waiting for next sync
-    await WaitForNextSync(SYNC_TIME, 'microsoft');
+    await waitForNextSync(SYNC_TIME, 'microsoft');
 
     // after the sync
     // check user_1 is deleted from user entities and group entities
 
-    await common.MicrosoftAzureLogin(
+    await common.microsoftAzureLogin(
       constants.MSGRAPH_USERS['admin'].userPrincipalName,
       constants.RHSSO76_DEFAULT_PASSWORD,
     );
 
     await expect(
-      common.CheckUserIsShowingInCatalog([
+      common.checkUserIsShowingInCatalog([
         constants.MSGRAPH_USERS['user_1'].displayName,
       ]),
     ).rejects.toThrow();
 
-    const displayed = await common.GoToGroupPageAndGetDisplayedData(
+    const displayed = await common.goToGroupPageAndGetDisplayedData(
       constants.MSGRAPH_GROUPS['group_1'].displayName,
     );
     expect(displayed.groupMembers).not.toContain(
@@ -255,7 +255,7 @@ test.describe('Standard authentication providers: Micorsoft Azure EntraID', () =
   test('Move a user to another group in Microsoft EntraID', async () => {
     test.setTimeout(300 * 1000);
     if (test.info().retry > 0) {
-      await WaitForNextSync(SYNC_TIME, 'microsoft');
+      await waitForNextSync(SYNC_TIME, 'microsoft');
     }
     // move a user to another group -> user can still login
     // move user_2 to group_1
@@ -271,7 +271,7 @@ test.describe('Standard authentication providers: Micorsoft Azure EntraID', () =
       usersCreated['user_2'],
       groupsCreated['group_2'],
     );
-    await common.MicrosoftAzureLogin(
+    await common.microsoftAzureLogin(
       constants.MSGRAPH_USERS['user_2'].userPrincipalName,
       constants.RHSSO76_DEFAULT_PASSWORD,
     );
@@ -293,19 +293,19 @@ test.describe('Standard authentication providers: Micorsoft Azure EntraID', () =
     await context.clearCookies(); // If we don't clear cookies, Microsoft Login popup will present the last logger user
 
     // waiting for next sync
-    await WaitForNextSync(SYNC_TIME, 'microsoft');
+    await waitForNextSync(SYNC_TIME, 'microsoft');
 
     // after the sync
     // ensure the change is mirrored in the catalog
     logger.info(
       'Execute testcase: Move a user to another group in Microsoft EntraID: change should be mirrored and permission should be updated after the sync',
     );
-    await common.MicrosoftAzureLogin(
+    await common.microsoftAzureLogin(
       constants.MSGRAPH_USERS['user_2'].userPrincipalName,
       constants.RHSSO76_DEFAULT_PASSWORD,
     );
 
-    const displayed = await common.GoToGroupPageAndGetDisplayedData(
+    const displayed = await common.goToGroupPageAndGetDisplayedData(
       constants.MSGRAPH_GROUPS['location_admin'].displayName,
     );
     expect(displayed.groupMembers).toContain(
@@ -325,7 +325,7 @@ test.describe('Standard authentication providers: Micorsoft Azure EntraID', () =
   test('Remove a group from Microsoft EntraID', async () => {
     test.setTimeout(300 * 1000);
     if (test.info().retry > 0) {
-      await WaitForNextSync(SYNC_TIME, 'microsoft');
+      await waitForNextSync(SYNC_TIME, 'microsoft');
     }
     // remove a group -> members still exists, member should still login
     // remove group_3
@@ -335,13 +335,13 @@ test.describe('Standard authentication providers: Micorsoft Azure EntraID', () =
 
     await graphHelper.deleteGroupByIdAsync(groupsCreated['group_3'].id);
     // user_3 should login
-    await common.MicrosoftAzureLogin(
+    await common.microsoftAzureLogin(
       constants.MSGRAPH_USERS['admin'].userPrincipalName,
       constants.RHSSO76_DEFAULT_PASSWORD,
     );
 
     // group_3 should exist in rhdh
-    const displayed = await common.GoToGroupPageAndGetDisplayedData(
+    const displayed = await common.goToGroupPageAndGetDisplayedData(
       constants.MSGRAPH_GROUPS['group_3'].displayName,
     );
     expect(displayed.groupMembers).toContain(
@@ -356,18 +356,18 @@ test.describe('Standard authentication providers: Micorsoft Azure EntraID', () =
     await context.clearCookies(); // If we don't clear cookies, Microsoft Login popup will present the last logger user
 
     // waiting for next sync
-    await WaitForNextSync(SYNC_TIME, 'microsoft');
+    await waitForNextSync(SYNC_TIME, 'microsoft');
 
     // after the sync ensure the group entity is removed
     logger.info(
       'Execute testcase: Remove a group from Microsoft EntraID: group should be removed and permissions should default to read-only after the sync.',
     );
-    await common.MicrosoftAzureLogin(
+    await common.microsoftAzureLogin(
       constants.MSGRAPH_USERS['admin'].userPrincipalName,
       constants.RHSSO76_DEFAULT_PASSWORD,
     );
     await expect(
-      common.CheckGroupIsShowingInCatalog([
+      common.checkGroupIsShowingInCatalog([
         constants.MSGRAPH_GROUPS['group_3'].displayName,
       ]),
     ).rejects.toThrow();
@@ -376,7 +376,7 @@ test.describe('Standard authentication providers: Micorsoft Azure EntraID', () =
     await common.signOut();
     await context.clearCookies(); // If we don't clear cookies, Microsoft Login popup will present the last logger user
 
-    await common.MicrosoftAzureLogin(
+    await common.microsoftAzureLogin(
       constants.MSGRAPH_USERS['user_3'].userPrincipalName,
       constants.RHSSO76_DEFAULT_PASSWORD,
     );
@@ -396,7 +396,7 @@ test.describe('Standard authentication providers: Micorsoft Azure EntraID', () =
   test('Remove a user from RHDH', async () => {
     test.setTimeout(300 * 1000);
     if (test.info().retry > 0) {
-      await WaitForNextSync(SYNC_TIME, 'microsoft');
+      await waitForNextSync(SYNC_TIME, 'microsoft');
     }
 
     // remove user from RHDH -> authentication works, access is broken
@@ -404,19 +404,19 @@ test.describe('Standard authentication providers: Micorsoft Azure EntraID', () =
       'Executing testcase: Remove a user from RHDH: authentication should work, but access is denied before next sync.',
     );
 
-    await common.MicrosoftAzureLogin(
+    await common.microsoftAzureLogin(
       constants.MSGRAPH_USERS['admin'].userPrincipalName,
       constants.RHSSO76_DEFAULT_PASSWORD,
     );
     logger.info('Unregistering user 3 from catalog');
-    await common.UnregisterUserEnittyFromCatalog(
+    await common.unregisterUserEnittyFromCatalog(
       constants.MSGRAPH_USERS['user_3'].displayName,
     );
     logger.info('Checking alert message after login');
     await uiHelper.verifyAlertErrorMessage(/Removed entity/gm);
 
     await expect(async () => {
-      await common.CheckUserIsShowingInCatalog([
+      await common.checkUserIsShowingInCatalog([
         constants.RHSSO76_USERS['user_4'].firstName +
           ' ' +
           constants.RHSSO76_USERS['user_4'].lastName,
@@ -430,7 +430,7 @@ test.describe('Standard authentication providers: Micorsoft Azure EntraID', () =
     await common.signOut();
     await context.clearCookies(); // If we don't clear cookies, Microsoft Login popup will present the last logger user
 
-    const loginSucceded = await common.MicrosoftAzureLogin(
+    const loginSucceded = await common.microsoftAzureLogin(
       constants.MSGRAPH_USERS['user_3'].userPrincipalName,
       constants.RHSSO76_DEFAULT_PASSWORD,
     );
@@ -443,14 +443,14 @@ test.describe('Standard authentication providers: Micorsoft Azure EntraID', () =
     await context.clearCookies(); // If we don't clear cookies, Microsoft Login popup will present the last logger user
 
     // waiting for next sync
-    await WaitForNextSync(SYNC_TIME, 'microsoft');
+    await waitForNextSync(SYNC_TIME, 'microsoft');
 
     // after sync, user_4 is created again and can login
     logger.info(
       'Execute testcase: Remove a user from RHDH: user is re-created and can login after the sync',
     );
 
-    await common.MicrosoftAzureLogin(
+    await common.microsoftAzureLogin(
       constants.MSGRAPH_USERS['user_3'].userPrincipalName,
       constants.RHSSO76_DEFAULT_PASSWORD,
     );
@@ -462,7 +462,7 @@ test.describe('Standard authentication providers: Micorsoft Azure EntraID', () =
   test('Remove a group from RHDH', async () => {
     test.setTimeout(300 * 1000);
     if (test.info().retry > 0) {
-      await WaitForNextSync(SYNC_TIME, 'microsoft');
+      await waitForNextSync(SYNC_TIME, 'microsoft');
     }
 
     // remove group from RHDH -> user can login, but policy is broken
@@ -470,18 +470,18 @@ test.describe('Standard authentication providers: Micorsoft Azure EntraID', () =
       'Executing testcase: Remove a group from RHDH: user can login, but policy is broken before next sync.',
     );
 
-    await common.MicrosoftAzureLogin(
+    await common.microsoftAzureLogin(
       constants.MSGRAPH_USERS['admin'].userPrincipalName,
       constants.RHSSO76_DEFAULT_PASSWORD,
     );
-    await common.UnregisterGroupEnittyFromCatalog(
+    await common.unregisterGroupEnittyFromCatalog(
       constants.MSGRAPH_GROUPS['group_5'].displayName,
     );
     await uiHelper.verifyAlertErrorMessage(/Removed entity/gm);
     await uiHelper.openSidebar('Settings');
     await common.signOut();
 
-    await common.MicrosoftAzureLogin(
+    await common.microsoftAzureLogin(
       constants.MSGRAPH_USERS['user_5'].userPrincipalName,
       constants.RHSSO76_DEFAULT_PASSWORD,
     );
@@ -490,17 +490,17 @@ test.describe('Standard authentication providers: Micorsoft Azure EntraID', () =
     await context.clearCookies(); // If we don't clear cookies, Microsoft Login popup will present the last logger user
 
     // waiting for next sync
-    await WaitForNextSync(SYNC_TIME, 'microsoft');
+    await waitForNextSync(SYNC_TIME, 'microsoft');
 
     // after sync, ensure group_5 is created again and memembers can login
     logger.info(
       'Execute testcase: Remove a group from RHDH: group is created again after the sync',
     );
-    await common.MicrosoftAzureLogin(
+    await common.microsoftAzureLogin(
       constants.MSGRAPH_USERS['user_5'].userPrincipalName,
       constants.RHSSO76_DEFAULT_PASSWORD,
     );
-    await common.CheckGroupIsShowingInCatalog([
+    await common.checkGroupIsShowingInCatalog([
       constants.MSGRAPH_GROUPS['group_5'].displayName,
     ]);
     await uiHelper.openSidebar('Settings');
@@ -511,9 +511,9 @@ test.describe('Standard authentication providers: Micorsoft Azure EntraID', () =
   test('Rename a user and a group', async () => {
     test.setTimeout(600 * 1000);
     if (test.info().retry > 0) {
-      await WaitForNextSync(SYNC_TIME, 'microsoft');
+      await waitForNextSync(SYNC_TIME, 'microsoft');
     }
-    await WaitForNextSync(SYNC_TIME, 'microsoft');
+    await waitForNextSync(SYNC_TIME, 'microsoft');
     // rename group from RHDH -> user can login, but policy is broken
     logger.info('Executing testcase: Rename a user and a group.');
 
@@ -526,28 +526,28 @@ test.describe('Standard authentication providers: Micorsoft Azure EntraID', () =
     });
 
     // waiting for next sync
-    await WaitForNextSync(SYNC_TIME, 'microsoft');
+    await waitForNextSync(SYNC_TIME, 'microsoft');
 
     // after sync, ensure group is mirrored
     // after sync, ensure user change is mirrorred
     logger.info(
       'Execute testcase: Rename a user and a group: changes are mirrored in RHDH but permissions should be broken after the sync',
     );
-    await common.MicrosoftAzureLogin(
+    await common.microsoftAzureLogin(
       constants.MSGRAPH_USERS['admin'].userPrincipalName,
       constants.RHSSO76_DEFAULT_PASSWORD,
     );
-    await common.CheckUserIsShowingInCatalog([
+    await common.checkUserIsShowingInCatalog([
       constants.MSGRAPH_USERS['user_6'].displayName + ' Renamed',
     ]);
-    await common.CheckGroupIsShowingInCatalog([
+    await common.checkGroupIsShowingInCatalog([
       constants.MSGRAPH_GROUPS['group_6'].displayName + '_renamed',
     ]);
     await uiHelper.openSidebar('Settings');
     await common.signOut();
     await context.clearCookies(); // If we don't clear cookies, Microsoft Login popup will present the last logger user
 
-    await common.MicrosoftAzureLogin(
+    await common.microsoftAzureLogin(
       'renamed_' + constants.MSGRAPH_USERS['user_6'].userPrincipalName,
       constants.RHSSO76_DEFAULT_PASSWORD,
     );

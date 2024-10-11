@@ -52,7 +52,7 @@ export class BackstageShowcase {
     this.uiHelper = new UIhelper(page);
   }
 
-  async getGithubOpenIssues() {
+  static async getGithubOpenIssues() {
     const rep = await APIHelper.getGithubPaginatedRequest(
       githubAPIEndpoints.issues('open'),
     );
@@ -104,7 +104,7 @@ export class BackstageShowcase {
     await this.page.click(`ul[role="listbox"] li[data-value="${rows}"]`);
   }
 
-  async getWorkflowRuns() {
+  static async getWorkflowRuns() {
     const response = await APIHelper.githubRequest(
       'GET',
       githubAPIEndpoints.workflowRuns,

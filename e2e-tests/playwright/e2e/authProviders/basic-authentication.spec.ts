@@ -80,7 +80,7 @@ test.describe('Standard authentication providers: Basic authentication', () => {
       ],
     );
 
-    await common.MicrosoftAzureLogin(
+    await common.microsoftAzureLogin(
       constants.AZURE_LOGIN_USERNAME,
       constants.AZURE_LOGIN_PASSWORD,
     );
@@ -115,7 +115,7 @@ test.describe('Standard authentication providers: Basic authentication', () => {
       ],
     );
 
-    await common.MicrosoftAzureLogin(
+    await common.microsoftAzureLogin(
       constants.AZURE_LOGIN_USERNAME,
       constants.AZURE_LOGIN_PASSWORD,
     );

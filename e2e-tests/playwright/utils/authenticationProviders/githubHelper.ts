@@ -122,21 +122,21 @@ export async function listTeams(org: string) {
   return await octokit.rest.teams.list({ org });
 }
 
-export async function listTeamsMembers(team_slug: string, org: string) {
+export async function listTeamsMembers(teamSlug: string, org: string) {
   return await octokit.rest.teams.listMembersInOrg({
     org,
-    team_slug,
+    team_slug: teamSlug,
   });
 }
 
 export async function addMemberToTeam(
-  team_slug: string,
+  teamSlug: string,
   org: string,
   member: string,
 ) {
   return await octokit.rest.teams.addOrUpdateMembershipForUserInOrg({
     org,
-    team_slug,
+    team_slug: teamSlug,
     username: member,
   });
 }
@@ -152,13 +152,13 @@ export async function removeUserFromAllTeams(user: string, org: string) {
 }
 
 export async function removeMemberToTeam(
-  team_slug: string,
+  teamSlug: string,
   org: string,
   member: string,
 ) {
   return await octokit.rest.teams.removeMembershipForUserInOrg({
     org,
-    team_slug,
+    team_slug: teamSlug,
     username: member,
   });
 }

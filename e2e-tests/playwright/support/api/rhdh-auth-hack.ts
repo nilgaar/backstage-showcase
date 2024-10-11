@@ -18,13 +18,13 @@ export class RhdhAuthHack {
 
   async getApiToken(page: Page): Promise<string> {
     if (!this.token) {
-      const _t = await this._getApiToken(page);
+      const _t = await RhdhAuthHack._getApiToken(page);
       this.token = _t;
     }
     return this.token;
   }
 
-  private async _getApiToken(page: Page) {
+  private static async _getApiToken(page: Page) {
     const uiHelper = new UIhelper(page);
 
     await uiHelper.openSidebar('Catalog');

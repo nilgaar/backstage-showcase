@@ -1,11 +1,12 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { spawn } from 'child_process';
 import { expect } from '@playwright/test';
 import { V1ConfigMap, V1Secret } from '@kubernetes/client-node';
 import { logger } from './Logger';
 import * as constants from './authenticationProviders/constants';
-import { kubeCLient } from './k8sHelper';
+import { KubeCLient } from './k8sHelper';
 
-export const k8sClient = new kubeCLient();
+export const k8sClient = new KubeCLient();
 
 export async function runShellCmd(command: string) {
   return new Promise<string>(resolve => {
@@ -114,7 +115,7 @@ export async function getLastSyncTimeFromLogs(
   }
 }
 
-export async function WaitForNextSync(SYNC__TIME: number, provider: string) {
+export async function waitForNextSync(SYNC__TIME: number, provider: string) {
   let syncTime: number | null = null;
   await expect(async () => {
     const _syncTime = await getLastSyncTimeFromLogs(provider);

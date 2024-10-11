@@ -7,7 +7,7 @@ import * as constants from '../../utils/authenticationProviders/constants';
 import { logger } from '../../utils/Logger';
 import {
   upgradeHelmChartWithWait,
-  WaitForNextSync,
+  waitForNextSync,
   replaceInRBACPolicyFileConfigMap,
 } from '../../utils/helper';
 import * as rhssoHelper from '../../utils/authenticationProviders/rhssoHelper';
@@ -21,7 +21,7 @@ test.describe('Standard authentication providers: OIDC with RHSSO 7.6', () => {
   let uiHelper: UIhelper;
   let usersCreated: Map<string, UserRepresentation>;
   let groupsCreated: Map<string, GroupRepresentation>;
-  const SYNC__TIME = 60;
+  const SYNC_TIME = 60;
 
   test.beforeAll(async ({ browser }, testInfo) => {
     logger.info(
@@ -66,7 +66,7 @@ test.describe('Standard authentication providers: OIDC with RHSSO 7.6', () => {
       ],
     );
 
-    await WaitForNextSync(SYNC__TIME, 'rhsso');
+    await waitForNextSync(SYNC_TIME, 'rhsso');
 
     await common.keycloakLogin(
       constants.RHSSO76_USERS['user_1'].username,
@@ -74,9 +74,7 @@ test.describe('Standard authentication providers: OIDC with RHSSO 7.6', () => {
     );
     await uiHelper.openSidebar('Settings');
     await uiHelper.verifyHeading(
-      await rhssoHelper.getRHSSOUserDisplayName(
-        constants.RHSSO76_USERS['user_1'],
-      ),
+      rhssoHelper.getRHSSOUserDisplayName(constants.RHSSO76_USERS['user_1']),
     );
     await common.signOut();
 
@@ -123,7 +121,7 @@ test.describe('Standard authentication providers: OIDC with RHSSO 7.6', () => {
       ],
     );
 
-    await WaitForNextSync(SYNC__TIME, 'rhsso');
+    await waitForNextSync(SYNC_TIME, 'rhsso');
 
     // emailMatchingUserEntityProfileEmail should only allow authentication of keycloak users that match the email attribute with the entity one.
     // update jdoe email -> login should fail with error Login failed; caused by Error: Failed to sign-in, unable to resolve user identity
@@ -139,9 +137,7 @@ test.describe('Standard authentication providers: OIDC with RHSSO 7.6', () => {
     );
     await uiHelper.openSidebar('Settings');
     await uiHelper.verifyHeading(
-      await rhssoHelper.getRHSSOUserDisplayName(
-        constants.RHSSO76_USERS['user_1'],
-      ),
+      rhssoHelper.getRHSSOUserDisplayName(constants.RHSSO76_USERS['user_1']),
     );
     await common.signOut();
 
@@ -189,7 +185,7 @@ test.describe('Standard authentication providers: OIDC with RHSSO 7.6', () => {
 
     // preferredUsernameMatchingUserEntityName should allow authentication of any keycloak.
 
-    await WaitForNextSync(SYNC__TIME, 'rhsso');
+    await waitForNextSync(SYNC_TIME, 'rhsso');
 
     // login with testuser1 -> login should succeed
     await common.keycloakLogin(
@@ -227,7 +223,7 @@ test.describe('Standard authentication providers: OIDC with RHSSO 7.6', () => {
 
   test('Ingestion of Users and Nested Groups: verify the UserEntities and Groups are created with the correct relationships in RHDH', async () => {
     if (test.info().retry > 0) {
-      await WaitForNextSync(SYNC__TIME, 'rhsso');
+      await waitForNextSync(SYNC_TIME, 'rhsso');
     }
     await common.keycloakLogin(
       constants.RHSSO76_USERS['user_1'].username,
@@ -239,19 +235,19 @@ test.describe('Standard authentication providers: OIDC with RHSSO 7.6', () => {
       rhssoHelper.getRHSSOUserDisplayName(u),
     );
 
-    await common.CheckUserIsShowingInCatalog(usersDisplayNames);
+    await common.checkUserIsShowingInCatalog(usersDisplayNames);
 
     // check groups are nested correctly and display all members
     const groupsDisplayNames = Object.values(constants.RHSSO76_GROUPS).map(
       g => g.name,
     );
     groupsDisplayNames.push(constants.RHSSO76_NESTED_GROUP.name);
-    await common.CheckGroupIsShowingInCatalog(groupsDisplayNames);
+    await common.checkGroupIsShowingInCatalog(groupsDisplayNames);
 
     let displayed;
 
     // group_1 should show user_1
-    displayed = await common.GoToGroupPageAndGetDisplayedData(
+    displayed = await common.goToGroupPageAndGetDisplayedData(
       constants.RHSSO76_GROUPS['group_1'].name,
     );
 
@@ -260,7 +256,7 @@ test.describe('Standard authentication providers: OIDC with RHSSO 7.6', () => {
     );
 
     // group_2 should show user_2 and parent group_nested
-    displayed = await common.GoToGroupPageAndGetDisplayedData(
+    displayed = await common.goToGroupPageAndGetDisplayedData(
       constants.RHSSO76_GROUPS['group_2'].name,
     );
 
@@ -272,7 +268,7 @@ test.describe('Standard authentication providers: OIDC with RHSSO 7.6', () => {
     );
 
     // group_nested should show user_3
-    displayed = await common.GoToGroupPageAndGetDisplayedData(
+    displayed = await common.goToGroupPageAndGetDisplayedData(
       constants.RHSSO76_NESTED_GROUP.name,
     );
 
@@ -293,7 +289,7 @@ test.describe('Standard authentication providers: OIDC with RHSSO 7.6', () => {
     test.setTimeout(300 * 1000);
     logger.info('Executing testcase: Remove user from RHSSO');
     if (test.info().retry > 0) {
-      await WaitForNextSync(SYNC__TIME, 'rhsso');
+      await waitForNextSync(SYNC_TIME, 'rhsso');
     }
     await rhssoHelper.deleteUser(usersCreated['user_1'].id);
     await page.waitForTimeout(2000); // give rhsso a few seconds
@@ -304,7 +300,7 @@ test.describe('Standard authentication providers: OIDC with RHSSO 7.6', () => {
 
     await uiHelper.verifyAlertErrorMessage(/Login failed/gm);
 
-    await WaitForNextSync(SYNC__TIME, 'rhsso');
+    await waitForNextSync(SYNC_TIME, 'rhsso');
 
     await common.keycloakLogin(
       constants.RHSSO76_USERS['user_2'].username,
@@ -312,12 +308,12 @@ test.describe('Standard authentication providers: OIDC with RHSSO 7.6', () => {
     );
 
     await expect(
-      common.CheckUserIsShowingInCatalog([
+      common.checkUserIsShowingInCatalog([
         rhssoHelper.getRHSSOUserDisplayName(constants.RHSSO76_USERS['user_1']),
       ]),
     ).rejects.toThrow();
 
-    const displayed = await common.GoToGroupPageAndGetDisplayedData(
+    const displayed = await common.goToGroupPageAndGetDisplayedData(
       constants.RHSSO76_GROUPS['group_1'].name,
     );
     expect(displayed.groupMembers).not.toContain(
@@ -330,7 +326,7 @@ test.describe('Standard authentication providers: OIDC with RHSSO 7.6', () => {
   test('Move a user to another group in RHSSO', async () => {
     test.setTimeout(300 * 1000);
     if (test.info().retry > 0) {
-      await WaitForNextSync(SYNC__TIME, 'rhsso');
+      await waitForNextSync(SYNC_TIME, 'rhsso');
     }
     // move a user to another group -> ensure user can still login
     // move user_3 to group_3
@@ -370,7 +366,7 @@ test.describe('Standard authentication providers: OIDC with RHSSO 7.6', () => {
     await uiHelper.openSidebar('Settings');
     await common.signOut();
 
-    await WaitForNextSync(SYNC__TIME, 'rhsso');
+    await waitForNextSync(SYNC_TIME, 'rhsso');
 
     // ensure the change is mirrored in the catalog
     logger.info(
@@ -381,7 +377,7 @@ test.describe('Standard authentication providers: OIDC with RHSSO 7.6', () => {
       constants.RHSSO76_DEFAULT_PASSWORD,
     );
 
-    const displayed = await common.GoToGroupPageAndGetDisplayedData(
+    const displayed = await common.goToGroupPageAndGetDisplayedData(
       constants.RHSSO76_GROUPS['location_admin'].name,
     );
     expect(displayed.groupMembers).toContain(
@@ -400,7 +396,7 @@ test.describe('Standard authentication providers: OIDC with RHSSO 7.6', () => {
       page.viewportSize().height / 2,
     );
 
-    await await uiHelper.verifyLocationRefreshButtonIsEnabled('example');
+    await uiHelper.verifyLocationRefreshButtonIsEnabled('example');
 
     await page.goto('/');
     await uiHelper.openSidebar('Settings');
@@ -410,7 +406,7 @@ test.describe('Standard authentication providers: OIDC with RHSSO 7.6', () => {
   test('Remove a group from RHSSO', async () => {
     test.setTimeout(300 * 1000);
     if (test.info().retry > 0) {
-      await WaitForNextSync(SYNC__TIME, 'rhsso');
+      await waitForNextSync(SYNC_TIME, 'rhsso');
     }
     // remove a group -> ensure group and its members still exists, member should still login
     // remove group_3
@@ -426,7 +422,7 @@ test.describe('Standard authentication providers: OIDC with RHSSO 7.6', () => {
     );
 
     // group_4 should exist in rhdh
-    const displayed = await common.GoToGroupPageAndGetDisplayedData(
+    const displayed = await common.goToGroupPageAndGetDisplayedData(
       constants.RHSSO76_GROUPS['group_4'].name,
     );
     expect(displayed.groupMembers).toContain(
@@ -437,7 +433,7 @@ test.describe('Standard authentication providers: OIDC with RHSSO 7.6', () => {
     await common.signOut();
 
     // waiting for next sync
-    await WaitForNextSync(SYNC__TIME, 'rhsso');
+    await waitForNextSync(SYNC_TIME, 'rhsso');
 
     // after the sync ensure the group entity is removed
     logger.info(
@@ -449,7 +445,7 @@ test.describe('Standard authentication providers: OIDC with RHSSO 7.6', () => {
     );
 
     await expect(
-      common.CheckGroupIsShowingInCatalog([
+      common.checkGroupIsShowingInCatalog([
         constants.RHSSO76_GROUPS['group_4'].name,
       ]),
     ).rejects.toThrow();
@@ -481,19 +477,19 @@ test.describe('Standard authentication providers: OIDC with RHSSO 7.6', () => {
       'Executing testcase: Remove a user from RHDH: authentication should work, but access is denied before next sync.',
     );
     if (test.info().retry > 0) {
-      await WaitForNextSync(SYNC__TIME, 'rhsso');
+      await waitForNextSync(SYNC_TIME, 'rhsso');
     }
     await common.keycloakLogin(
       constants.RHSSO76_USERS['admin'].username,
       constants.RHSSO76_DEFAULT_PASSWORD,
     );
-    await common.UnregisterUserEnittyFromCatalog(
+    await common.unregisterUserEnittyFromCatalog(
       rhssoHelper.getRHSSOUserDisplayName(constants.RHSSO76_USERS['user_4']),
     );
     await uiHelper.verifyAlertErrorMessage(/Removed entity/gm);
 
     await expect(async () => {
-      await common.CheckUserIsShowingInCatalog([
+      await common.checkUserIsShowingInCatalog([
         rhssoHelper.getRHSSOUserDisplayName(constants.RHSSO76_USERS['user_4']),
       ]);
     }).not.toPass({
@@ -518,7 +514,7 @@ test.describe('Standard authentication providers: OIDC with RHSSO 7.6', () => {
       constants.AUTH_PROVIDERS_REALM_NAME,
     );
 
-    await WaitForNextSync(SYNC__TIME, 'rhsso');
+    await waitForNextSync(SYNC_TIME, 'rhsso');
 
     logger.info(
       'Execute testcase: Remove a user from RHDH: user is re-created and can login after the sync',
@@ -527,7 +523,7 @@ test.describe('Standard authentication providers: OIDC with RHSSO 7.6', () => {
       constants.RHSSO76_USERS['user_4'].username,
       constants.RHSSO76_DEFAULT_PASSWORD,
     );
-    await common.CheckUserIsShowingInCatalog([
+    await common.checkUserIsShowingInCatalog([
       rhssoHelper.getRHSSOUserDisplayName(constants.RHSSO76_USERS['user_4']),
     ]);
     await uiHelper.openSidebar('Settings');
@@ -542,21 +538,21 @@ test.describe('Standard authentication providers: OIDC with RHSSO 7.6', () => {
       'Executing testcase: Remove a group from RHDH: user can login, but policy is broken before next sync.',
     );
     if (test.info().retry >= 0) {
-      await WaitForNextSync(SYNC__TIME, 'rhsso');
+      await waitForNextSync(SYNC_TIME, 'rhsso');
     }
     await common.keycloakLogin(
       constants.RHSSO76_USERS['admin'].username,
       constants.RHSSO76_DEFAULT_PASSWORD,
     );
 
-    await common.UnregisterGroupEnittyFromCatalog(
+    await common.unregisterGroupEnittyFromCatalog(
       constants.RHSSO76_GROUPS['group_3'].name,
     );
 
     await uiHelper.verifyAlertErrorMessage(/Removed entity/gm);
 
     await expect(
-      common.CheckGroupIsShowingInCatalog([
+      common.checkGroupIsShowingInCatalog([
         constants.RHSSO76_GROUPS['group_3'].name,
       ]),
     ).rejects.toThrow(/Expected at least one cell/);
@@ -564,7 +560,7 @@ test.describe('Standard authentication providers: OIDC with RHSSO 7.6', () => {
     await uiHelper.openSidebar('Settings');
     await common.signOut();
 
-    await WaitForNextSync(SYNC__TIME, 'rhsso');
+    await waitForNextSync(SYNC_TIME, 'rhsso');
 
     // after sync, ensure group is created again and memembers can login
     logger.info(
@@ -574,7 +570,7 @@ test.describe('Standard authentication providers: OIDC with RHSSO 7.6', () => {
       constants.RHSSO76_USERS['admin'].username,
       constants.RHSSO76_DEFAULT_PASSWORD,
     );
-    await common.CheckGroupIsShowingInCatalog([
+    await common.checkGroupIsShowingInCatalog([
       constants.RHSSO76_GROUPS['group_3'].name,
     ]);
     await uiHelper.openSidebar('Settings');
@@ -584,7 +580,7 @@ test.describe('Standard authentication providers: OIDC with RHSSO 7.6', () => {
   test('Rename a user and a group', async () => {
     test.setTimeout(300 * 1000);
     if (test.info().retry > 0) {
-      await WaitForNextSync(SYNC__TIME, 'rhsso');
+      await waitForNextSync(SYNC_TIME, 'rhsso');
     }
 
     // rename group -> user can login, but policy is broken
@@ -601,7 +597,7 @@ test.describe('Standard authentication providers: OIDC with RHSSO 7.6', () => {
     });
 
     // waiting for next sync
-    await WaitForNextSync(SYNC__TIME, 'rhsso');
+    await waitForNextSync(SYNC_TIME, 'rhsso');
 
     // after sync, ensure group is mirrored
     // after sync, ensure user change is mirrorred
@@ -612,12 +608,11 @@ test.describe('Standard authentication providers: OIDC with RHSSO 7.6', () => {
       constants.RHSSO76_USERS['admin'].username,
       constants.RHSSO76_DEFAULT_PASSWORD,
     );
-    await common.CheckUserIsShowingInCatalog([
-      (await rhssoHelper.getRHSSOUserDisplayName(
-        constants.RHSSO76_USERS['user_2'],
-      )) + ' Renamed',
+    await common.checkUserIsShowingInCatalog([
+      rhssoHelper.getRHSSOUserDisplayName(constants.RHSSO76_USERS['user_2']) +
+        ' Renamed',
     ]);
-    await common.CheckGroupIsShowingInCatalog([
+    await common.checkGroupIsShowingInCatalog([
       constants.RHSSO76_GROUPS['group_2'].name + '_renamed',
     ]);
 
