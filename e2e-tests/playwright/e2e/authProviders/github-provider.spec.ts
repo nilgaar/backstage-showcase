@@ -1,4 +1,5 @@
 import { test, Page, expect } from '@playwright/test';
+import { BrowserContext } from '@playwright/test';
 import { Common, setupBrowser } from '../../utils/Common';
 import { UIhelper } from '../../utils/UIhelper';
 import * as constants from '../../utils/authenticationProviders/constants';
@@ -8,7 +9,6 @@ import {
   WaitForNextSync,
   replaceInRBACPolicyFileConfigMap,
 } from '../../utils/helper';
-import { BrowserContext } from '@playwright/test';
 import * as ghHelper from '../../utils/authenticationProviders/githubHelper';
 
 let page: Page;

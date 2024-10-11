@@ -1,12 +1,12 @@
 import { test, Page, expect } from '@playwright/test';
+import { BrowserContext } from '@playwright/test';
+import UserRepresentation from '@keycloak/keycloak-admin-client/lib/defs/userRepresentation';
+import GroupRepresentation from '@keycloak/keycloak-admin-client/lib/defs/groupRepresentation';
 import { Common, setupBrowser } from '../../utils/Common';
 import { UIhelper } from '../../utils/UIhelper';
-import UserRepresentation from '@keycloak/keycloak-admin-client/lib/defs/userRepresentation';
 import * as constants from '../../utils/authenticationProviders/constants';
 import { logger } from '../../utils/Logger';
 import * as graphHelper from '../../utils/authenticationProviders/msgraphHelper';
-import { BrowserContext } from '@playwright/test';
-import GroupRepresentation from '@keycloak/keycloak-admin-client/lib/defs/groupRepresentation';
 import {
   upgradeHelmChartWithWait,
   WaitForNextSync,

@@ -258,18 +258,18 @@ test.describe.serial('Test RBAC plugin as an admin user', () => {
       await uiHelper.clickButton('Create');
       await uiHelper.verifyHeading('Create role');
 
-      await page.fill(RoleFormPO.roleName, 'test-role');
+      await page.fill(roleFormPO.roleName, 'test-role');
       await uiHelper.clickButton('Next');
-      await page.fill(RoleFormPO.addUsersAndGroups, 'guest user');
-      await page.click(RoleFormPO.selectMember('Guest User'));
+      await page.fill(roleFormPO.addUsersAndGroups, 'guest user');
+      await page.click(roleFormPO.selectMember('Guest User'));
       await uiHelper.clickButton('Next');
 
-      await page.click(RoleFormPO.selectPermissionPolicyPlugin(0), {
+      await page.click(roleFormPO.selectPermissionPolicyPlugin(0), {
         timeout: 100000,
       });
       await uiHelper.optionSelector('catalog');
 
-      await page.click(RoleFormPO.selectPermissionPolicyPermission(0), {
+      await page.click(roleFormPO.selectPermissionPolicyPermission(0), {
         timeout: 100000,
       });
       await uiHelper.optionSelector('catalog.entity.create');
@@ -283,8 +283,8 @@ test.describe.serial('Test RBAC plugin as an admin user', () => {
     'As an RHDH admin, I want to be able to restrict access by using the Not condition to part of the plugin, so that some information is protected from unauthorized access.',
     async () => {
       await rolesHelper.createRoleWithNotPermissionPolicy('test-role');
-      await page.locator(HomePagePO.searchBar).waitFor({ state: 'visible' });
-      await page.locator(HomePagePO.searchBar).fill('test-role');
+      await page.locator(homePagePO.searchBar).waitFor({ state: 'visible' });
+      await page.locator(homePagePO.searchBar).fill('test-role');
       await uiHelper.verifyHeading('All roles (1)');
 
       await rolesHelper.deleteRole('role:default/test-role');
@@ -295,11 +295,11 @@ test.describe.serial('Test RBAC plugin as an admin user', () => {
     'As an RHDH admin, I want to be able to edit the access rule, so I can keep it up to date and be able to add more plugins in the future.',
     async () => {
       await rolesHelper.createRoleWithNotPermissionPolicy('test-role');
-      await page.locator(HomePagePO.searchBar).waitFor({ state: 'visible' });
-      await page.locator(HomePagePO.searchBar).fill('test-role');
+      await page.locator(homePagePO.searchBar).waitFor({ state: 'visible' });
+      await page.locator(homePagePO.searchBar).fill('test-role');
       await uiHelper.verifyHeading('All roles (1)');
 
-      await page.click(RoleListPO.editRole('role:default/test-role'));
+      await page.click(roleListPO.editRole('role:default/test-role'));
       await uiHelper.verifyHeading('Edit Role');
       await uiHelper.clickButton('Next');
       await uiHelper.clickButton('Next');
@@ -326,11 +326,11 @@ test.describe.serial('Test RBAC plugin as an admin user', () => {
     'As an RHDH admin, I want to be able to remove an access rule from an existing permission policy.',
     async () => {
       await rolesHelper.createRoleWithPermissionPolicy('test-role');
-      await page.locator(HomePagePO.searchBar).waitFor({ state: 'visible' });
-      await page.locator(HomePagePO.searchBar).fill('test-role');
+      await page.locator(homePagePO.searchBar).waitFor({ state: 'visible' });
+      await page.locator(homePagePO.searchBar).fill('test-role');
       await uiHelper.verifyHeading('All roles (1)');
 
-      await page.click(RoleListPO.editRole('role:default/test-role'));
+      await page.click(roleListPO.editRole('role:default/test-role'));
       await uiHelper.verifyHeading('Edit Role');
       await uiHelper.clickButton('Next');
       await uiHelper.clickButton('Next');
