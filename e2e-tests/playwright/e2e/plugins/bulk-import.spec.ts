@@ -144,7 +144,7 @@ test.describe.serial('Bulk Import plugin', () => {
     expect(prCatalogInfoYaml).toEqual(expectedCatalogInfoYaml);
   });
 
-  test("Verify Selected repositories shows catalog-info.yaml status as 'Added' and 'WAIT_PR_APPROVAL'", async () => {
+  test('Verify Selected repositories shows catalog-info.yaml status as \'Added\' and \'WAIT_PR_APPROVAL\'', async () => {
     await uiHelper.openSidebar('Bulk import');
     await uiHelper.clickButton('Add');
     await uiHelper.searchInputPlaceholder(catalogRepoDetails.name);
@@ -157,7 +157,7 @@ test.describe.serial('Bulk Import plugin', () => {
     ]);
   });
 
-  test("Merge the PR on GitHub and Confirm the Status Updates to 'Added'", async () => {
+  test('Merge the PR on GitHub and Confirm the Status Updates to \'Added\'', async () => {
     await uiHelper.openSidebar('Bulk import');
     // Merge PR is generated for the repository without the catalog.yaml file.
     await APIHelper.mergeGitHubPR(
@@ -195,7 +195,7 @@ test.describe.serial('Bulk Import plugin', () => {
     ]);
   });
 
-  test("Delete a Bulk Import Repository and Verify It's No Longer Visible in the UI", async () => {
+  test('Delete a Bulk Import Repository and Verify It\'s No Longer Visible in the UI', async () => {
     await uiHelper.openSidebar('Bulk import');
     await common.waitForLoad();
     await bulkimport.filterAddedRepo(catalogRepoDetails.name);

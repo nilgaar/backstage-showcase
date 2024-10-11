@@ -82,7 +82,7 @@ test.describe('Standard authentication providers: Github Provider', () => {
     await page.goto('/');
     await uiHelper.verifyHeading('Select a sign-in method');
     const singInMethods = await page
-      .locator("div[class^='MuiCardHeader-root']")
+      .locator('div[class^=\'MuiCardHeader-root\']')
       .allInnerTexts();
     expect(singInMethods).not.toContain('Guest');
 
@@ -169,7 +169,7 @@ test.describe('Standard authentication providers: Github Provider', () => {
     }
     // remove user from RHDH -> authentication works, access is broken
     logger.info(
-      `Executing testcase: Remove a user from RHDH: authentication should work, but access is denied before next sync.`,
+      'Executing testcase: Remove a user from RHDH: authentication should work, but access is denied before next sync.',
     );
 
     await common.githubLogin(
@@ -212,7 +212,7 @@ test.describe('Standard authentication providers: Github Provider', () => {
 
     // after sync, user_4 is created again and can login
     logger.info(
-      `Execute testcase: Remove a user from RHDH: user is re-created and can login after the sync`,
+      'Execute testcase: Remove a user from RHDH: user is re-created and can login after the sync',
     );
 
     await common.githubLogin(
@@ -232,7 +232,7 @@ test.describe('Standard authentication providers: Github Provider', () => {
 
     // remove group from RHDH -> user can login, but policy is broken
     logger.info(
-      `Executing testcase: Remove a group from RHDH: user can login, but policy is broken before next sync.`,
+      'Executing testcase: Remove a group from RHDH: user can login, but policy is broken before next sync.',
     );
 
     await common.githubLogin(
@@ -258,7 +258,7 @@ test.describe('Standard authentication providers: Github Provider', () => {
 
     // after sync, ensure group is created again and memembers can login
     logger.info(
-      `Execute testcase: Remove a group from RHDH: group is created again after the sync`,
+      'Execute testcase: Remove a group from RHDH: group is created again after the sync',
     );
 
     await page.reload();
@@ -278,7 +278,7 @@ test.describe('Standard authentication providers: Github Provider', () => {
     }
     // move a user to another group -> ensure user can still login
     logger.info(
-      `Executing testcase: Move a user to another group in Github: user should still login before next sync.`,
+      'Executing testcase: Move a user to another group in Github: user should still login before next sync.',
     );
 
     await ghHelper.removeMemberToTeam(
@@ -307,7 +307,7 @@ test.describe('Standard authentication providers: Github Provider', () => {
     await uiHelper.clickLink('example');
     await uiHelper.verifyHeading('example');
     await expect(
-      page.locator(`button[title="Schedule entity refresh"]`),
+      page.locator('button[title="Schedule entity refresh"]'),
     ).toHaveCount(0);
     // logout
     await page.goto('/');
@@ -318,7 +318,7 @@ test.describe('Standard authentication providers: Github Provider', () => {
 
     // ensure the change is mirrored in the catalog
     logger.info(
-      `Execute testcase: Move a user to another group in Github: change should be mirrored and permission should be updated after the sync`,
+      'Execute testcase: Move a user to another group in Github: change should be mirrored and permission should be updated after the sync',
     );
     await common.githubLogin(
       constants.GH_USERS['user_1'].name,
@@ -348,7 +348,7 @@ test.describe('Standard authentication providers: Github Provider', () => {
     }
     // remove a group -> members still exists, member should still login
     logger.info(
-      `Executing testcase: Remove a group from Microsoft EntraID: ensure group and its members still exists, member should still login before next sync.`,
+      'Executing testcase: Remove a group from Microsoft EntraID: ensure group and its members still exists, member should still login before next sync.',
     );
 
     await ghHelper.deleteTeam(
@@ -372,7 +372,7 @@ test.describe('Standard authentication providers: Github Provider', () => {
 
     // after the sync ensure the group entity is removed
     logger.info(
-      `Execute testcase: Remove a group from Github: group should be removed and permissions should default to read-only after the sync.`,
+      'Execute testcase: Remove a group from Github: group should be removed and permissions should default to read-only after the sync.',
     );
 
     await expect(
@@ -392,7 +392,7 @@ test.describe('Standard authentication providers: Github Provider', () => {
     );
 
     await page.goto('/');
-    const navMyGroup = page.locator(`nav a:has-text("My Group")`);
+    const navMyGroup = page.locator('nav a:has-text("My Group")');
     await expect(navMyGroup).toHaveCount(0);
 
     await page.goto('/');
@@ -407,7 +407,7 @@ test.describe('Standard authentication providers: Github Provider', () => {
       await WaitForNextSync(SYNC_TIME, 'github');
     }
     // rename group from RHDH -> user can login, but policy is broken
-    logger.info(`Executing testcase: Rename a user and a group.`);
+    logger.info('Executing testcase: Rename a user and a group.');
 
     await ghHelper.removeUserFromAllTeams(
       constants.GH_USERS['user_1'].name,
@@ -429,7 +429,7 @@ test.describe('Standard authentication providers: Github Provider', () => {
 
     // after sync, ensure group is mirrored
     logger.info(
-      `Execute testcase: Rename a user and a group: changes are mirrored in RHDH but permissions should be broken after the sync`,
+      'Execute testcase: Rename a user and a group: changes are mirrored in RHDH but permissions should be broken after the sync',
     );
     await common.githubLogin(
       constants.GH_USERS['admin'].name,
@@ -451,7 +451,7 @@ test.describe('Standard authentication providers: Github Provider', () => {
     // users permission based on that group will be defaulted to read-only
     // expect user not to see catalog entities
     await page.goto('/');
-    const navMyGroup = page.locator(`nav a:has-text("My Group")`);
+    const navMyGroup = page.locator('nav a:has-text("My Group")');
     await expect(navMyGroup).toHaveCount(0);
 
     // update the policy with the new group name
@@ -469,7 +469,7 @@ test.describe('Standard authentication providers: Github Provider', () => {
       logger.info(
         'Reloading page, permission should be updated automatically.',
       );
-      await expect(page.locator(`nav a:has-text("My Group")`)).toBeVisible({
+      await expect(page.locator('nav a:has-text("My Group")')).toBeVisible({
         timeout: 2000,
       });
     }).toPass({

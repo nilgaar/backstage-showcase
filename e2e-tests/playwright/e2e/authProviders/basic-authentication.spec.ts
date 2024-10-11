@@ -160,7 +160,7 @@ test.describe('Standard authentication providers: Basic authentication', () => {
     await page.goto('/');
     await uiHelper.verifyHeading('Select a sign-in method');
     const singInMethods = await page
-      .locator("div[class^='MuiCardHeader-root']")
+      .locator('div[class^=\'MuiCardHeader-root\']')
       .allInnerTexts();
     console.log(singInMethods);
     expect(singInMethods).not.toContain('Guest');

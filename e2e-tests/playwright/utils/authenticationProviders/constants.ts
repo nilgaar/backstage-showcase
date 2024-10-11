@@ -43,7 +43,7 @@ export const GH_USER_PASSWORD = process.env.GH_USER_PASSWORD;
 export const JDOE_NEW_EMAIL = 'jenny-doe-new-email@example.com';
 export const AZURE_LOGIN_FIRSTNAME = 'QE RHDH Testing Admin';
 
-export const RHSSO76_GROUPS: { [key: string]: GroupRepresentation } = {
+export const RHSSO76_GROUPS: Record<string, GroupRepresentation> = {
   group_1: {
     name: 'rhsso_group_1',
   },
@@ -65,7 +65,7 @@ export const RHSSO76_NESTED_GROUP: GroupRepresentation = {
   name: 'rhsso_group_nested',
 };
 
-export const RHSSO76_USERS: { [key: string]: UserRepresentation } = {
+export const RHSSO76_USERS: Record<string, UserRepresentation> = {
   admin: {
     username: 'rhsso_admin',
     email: 'rhsso_admin@rhdh.test',
@@ -203,7 +203,7 @@ export interface AppSettings {
   tenantId: string;
 }
 
-export const MSGRAPH_USERS: { [key: string]: User } = {
+export const MSGRAPH_USERS: Record<string, User> = {
   admin: {
     accountEnabled: true,
     displayName: 'QE Admin',
@@ -294,7 +294,7 @@ export const MSGRAPH_USERS: { [key: string]: User } = {
   },
 };
 
-export const MSGRAPH_GROUPS: { [key: string]: Group } = {
+export const MSGRAPH_GROUPS: Record<string, Group> = {
   group_1: {
     description: 'Group 1 for RHDH test automation - DO NOT USE/EDIT/DELETE',
     displayName: 'rhdh_test_group_1',
@@ -353,7 +353,7 @@ export const MSGRAPH_GROUPS: { [key: string]: Group } = {
   },
 };
 
-export const GH_TEAMS: { [key: string]: { name: string } } = {
+export const GH_TEAMS: Record<string, { name: string }> = {
   team_1: {
     name: 'gh_team_1',
   },
@@ -371,7 +371,7 @@ export const GH_TEAMS: { [key: string]: { name: string } } = {
   },
 };
 
-export const GH_USERS: { [key: string]: { name: string } } = {
+export const GH_USERS: Record<string, { name: string }> = {
   user_1: {
     name: 'rhdhqeauth1',
   },

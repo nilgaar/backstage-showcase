@@ -23,7 +23,7 @@ const test = base.extend<GithubDiscoveryFixture>({
 });
 
 test.describe('Github Discovery Catalog', () => {
-  test("Discover Organization's Catalog", async ({
+  test('Discover Organization\'s Catalog', async ({
     catalogPage,
     githubApi,
     testOrganization,

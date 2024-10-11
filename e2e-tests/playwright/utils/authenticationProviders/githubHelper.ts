@@ -1,5 +1,5 @@
-import * as constants from './constants';
 import { App } from 'octokit';
+import * as constants from './constants';
 import { logger } from '../Logger';
 import * as helper from '../helper';
 

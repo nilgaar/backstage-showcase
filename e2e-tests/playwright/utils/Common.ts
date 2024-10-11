@@ -211,7 +211,7 @@ export class Common {
           try {
             await popup.locator('#login_field').fill(username);
             await popup.locator('#password').fill(password);
-            await popup.locator("[type='submit']").click({ timeout: 5000 });
+            await popup.locator('[type=\'submit\']').click({ timeout: 5000 });
             //await this.checkAndReauthorizeGithubApp()
             await popup.waitForEvent('close', { timeout: 2000 });
             resolve('Login successful');
@@ -271,28 +271,28 @@ export class Common {
   }
 
   async GetParentGroupDisplayed(): Promise<string[]> {
-    await this.page.waitForSelector("p:has-text('Parent Group')");
+    await this.page.waitForSelector('p:has-text(\'Parent Group\')');
     const parent = await this.page
-      .locator("p:has-text('Parent Group')")
+      .locator('p:has-text(\'Parent Group\')')
       .locator('..');
     const group = await parent.locator('a').allInnerTexts();
     return group;
   }
 
   async GetChildGroupsDisplayed(): Promise<string[]> {
-    await this.page.waitForSelector("p:has-text('Child Groups')");
+    await this.page.waitForSelector('p:has-text(\'Child Groups\')');
     const parent = await this.page
-      .locator("p:has-text('Child Groups')")
+      .locator('p:has-text(\'Child Groups\')')
       .locator('..');
     const groups = await parent.locator('a').allInnerTexts();
     return groups;
   }
 
   async GetMembersOfGroupDisplayed(): Promise<string[]> {
-    await this.page.waitForSelector(`//div[contains(., "Members")]/..`);
+    await this.page.waitForSelector('//div[contains(., "Members")]/..');
     const membersCard = this.page
       .locator(
-        `//div[contains(@class,'MuiCardHeader-root') and descendant::text()[contains(., "Members")] ]/.. // a[@data-testid='user-link']`,
+        '//div[contains(@class,\'MuiCardHeader-root\') and descendant::text()[contains(., "Members")] ]/.. // a[@data-testid=\'user-link\']',
       )
       .allInnerTexts();
     return membersCard;

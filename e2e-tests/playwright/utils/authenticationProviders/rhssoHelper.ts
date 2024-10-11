@@ -1,11 +1,11 @@
-import { logger } from '../Logger';
 import { expect } from '@playwright/test';
-import * as constants from './constants';
 import GroupRepresentation from '@keycloak/keycloak-admin-client/lib/defs/groupRepresentation';
 import UserRepresentation from '@keycloak/keycloak-admin-client/lib/defs/userRepresentation';
 import KcAdminClient from '@keycloak/keycloak-admin-client';
 import { ConnectionConfig } from '@keycloak/keycloak-admin-client/lib/client';
 import { Credentials } from '@keycloak/keycloak-admin-client/lib/utils/auth';
+import * as constants from './constants';
+import { logger } from '../Logger';
 import * as helper from '../helper';
 
 let kcAdminClient: KcAdminClient | undefined;
@@ -27,10 +27,10 @@ export async function initializeRHSSOClient(
 ) {
   // Ensure settings isn't null
   if (!connectionConfig) {
-    logger.error(`RHSSO config cannot be undefined`);
+    logger.error('RHSSO config cannot be undefined');
     throw new Error('Config cannot be undefined');
   }
-  logger.info(`Initializing RHSSO client`);
+  logger.info('Initializing RHSSO client');
   kcAdminClient = new KcAdminClient(connectionConfig);
   await kcAdminClient.auth(cred);
   setInterval(() => kcAdminClient.auth(cred), 58 * 1000);
@@ -58,13 +58,13 @@ export async function setupRHSSOEnvironment(): Promise<{
     //cleanup existing users
     const users = await kcAdminClient.users.find();
     for (const user of users) {
-      await kcAdminClient.users.del({ id: user.id! });
+      await kcAdminClient.users.del({ id: user.id });
     }
 
     //cleanup existing groups
     const groups = await kcAdminClient.groups.find();
     for (const group of groups) {
-      await kcAdminClient.groups.del({ id: group.id! });
+      await kcAdminClient.groups.del({ id: group.id });
     }
 
     for (const key in constants.RHSSO76_GROUPS) {

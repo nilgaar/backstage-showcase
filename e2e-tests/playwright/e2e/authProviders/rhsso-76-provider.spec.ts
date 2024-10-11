@@ -1,10 +1,10 @@
 import { test, Page, expect } from '@playwright/test';
+import UserRepresentation from '@keycloak/keycloak-admin-client/lib/defs/userRepresentation';
+import GroupRepresentation from '@keycloak/keycloak-admin-client/lib/defs/groupRepresentation';
 import { Common, setupBrowser } from '../../utils/Common';
 import { UIhelper } from '../../utils/UIhelper';
-import UserRepresentation from '@keycloak/keycloak-admin-client/lib/defs/userRepresentation';
 import * as constants from '../../utils/authenticationProviders/constants';
 import { logger } from '../../utils/Logger';
-import GroupRepresentation from '@keycloak/keycloak-admin-client/lib/defs/groupRepresentation';
 import {
   upgradeHelmChartWithWait,
   WaitForNextSync,
@@ -44,7 +44,7 @@ test.describe('Standard authentication providers: OIDC with RHSSO 7.6', () => {
     test.setTimeout(600 * 1000);
 
     logger.info(
-      `Executing testcase: Default resolver for RHSSO should be emailLocalPartMatchingUserEntityName: user_1 should authenticate, user_2 should not`,
+      'Executing testcase: Default resolver for RHSSO should be emailLocalPartMatchingUserEntityName: user_1 should authenticate, user_2 should not',
     );
     // setup RHSSO provider with user ingestion
     await upgradeHelmChartWithWait(
@@ -291,7 +291,7 @@ test.describe('Standard authentication providers: OIDC with RHSSO 7.6', () => {
   test('Remove user from RHSSO', async () => {
     // remove user from azure -> ensure authentication fails
     test.setTimeout(300 * 1000);
-    logger.info(`Executing testcase: Remove user from RHSSO`);
+    logger.info('Executing testcase: Remove user from RHSSO');
     if (test.info().retry > 0) {
       await WaitForNextSync(SYNC__TIME, 'rhsso');
     }
@@ -335,7 +335,7 @@ test.describe('Standard authentication providers: OIDC with RHSSO 7.6', () => {
     // move a user to another group -> ensure user can still login
     // move user_3 to group_3
     logger.info(
-      `Executing testcase: Move a user to another group in Microsoft EntraID: user should still login before next sync.`,
+      'Executing testcase: Move a user to another group in Microsoft EntraID: user should still login before next sync.',
     );
 
     await rhssoHelper.removeUserFromGroup(
@@ -363,7 +363,7 @@ test.describe('Standard authentication providers: OIDC with RHSSO 7.6', () => {
     await uiHelper.clickLink('example');
     await uiHelper.verifyHeading('example');
     await expect(
-      page.locator(`button[title="Schedule entity refresh"]`),
+      page.locator('button[title="Schedule entity refresh"]'),
     ).toHaveCount(0);
     // logout
     await page.goto('/');
@@ -374,7 +374,7 @@ test.describe('Standard authentication providers: OIDC with RHSSO 7.6', () => {
 
     // ensure the change is mirrored in the catalog
     logger.info(
-      `Execute testcase: Move a user to another group in RHSSO: change should be mirrored and permission should be updated after the sync`,
+      'Execute testcase: Move a user to another group in RHSSO: change should be mirrored and permission should be updated after the sync',
     );
     await common.keycloakLogin(
       constants.RHSSO76_USERS['user_3'].username,
@@ -415,7 +415,7 @@ test.describe('Standard authentication providers: OIDC with RHSSO 7.6', () => {
     // remove a group -> ensure group and its members still exists, member should still login
     // remove group_3
     logger.info(
-      `Executing testcase: Remove a group from RHSSO: ensure group and its members still exists, member should still login before next sync.`,
+      'Executing testcase: Remove a group from RHSSO: ensure group and its members still exists, member should still login before next sync.',
     );
 
     await rhssoHelper.deleteGroup(groupsCreated['group_4'].id);
@@ -441,7 +441,7 @@ test.describe('Standard authentication providers: OIDC with RHSSO 7.6', () => {
 
     // after the sync ensure the group entity is removed
     logger.info(
-      `Execute testcase: Remove a group from RHSSO: group should be removed and permissions should default to read-only after the sync.`,
+      'Execute testcase: Remove a group from RHSSO: group should be removed and permissions should default to read-only after the sync.',
     );
     await common.keycloakLogin(
       constants.RHSSO76_USERS['admin'].username,
@@ -465,7 +465,7 @@ test.describe('Standard authentication providers: OIDC with RHSSO 7.6', () => {
     // users permission based on that group will be defaulted to read-only
     // expect user not to see catalog entities
     await page.goto('/');
-    const navMyGroup = page.locator(`nav a:has-text("My Group")`);
+    const navMyGroup = page.locator('nav a:has-text("My Group")');
     await expect(navMyGroup).toHaveCount(0);
 
     await page.goto('/');
@@ -478,7 +478,7 @@ test.describe('Standard authentication providers: OIDC with RHSSO 7.6', () => {
 
     // remove user from RHDH -> authentication works, access is broken
     logger.info(
-      `Executing testcase: Remove a user from RHDH: authentication should work, but access is denied before next sync.`,
+      'Executing testcase: Remove a user from RHDH: authentication should work, but access is denied before next sync.',
     );
     if (test.info().retry > 0) {
       await WaitForNextSync(SYNC__TIME, 'rhsso');
@@ -521,7 +521,7 @@ test.describe('Standard authentication providers: OIDC with RHSSO 7.6', () => {
     await WaitForNextSync(SYNC__TIME, 'rhsso');
 
     logger.info(
-      `Execute testcase: Remove a user from RHDH: user is re-created and can login after the sync`,
+      'Execute testcase: Remove a user from RHDH: user is re-created and can login after the sync',
     );
     await common.keycloakLogin(
       constants.RHSSO76_USERS['user_4'].username,
@@ -539,7 +539,7 @@ test.describe('Standard authentication providers: OIDC with RHSSO 7.6', () => {
 
     // remove group from RHDH -> user can login, but policy is broken
     logger.info(
-      `Executing testcase: Remove a group from RHDH: user can login, but policy is broken before next sync.`,
+      'Executing testcase: Remove a group from RHDH: user can login, but policy is broken before next sync.',
     );
     if (test.info().retry >= 0) {
       await WaitForNextSync(SYNC__TIME, 'rhsso');
@@ -568,7 +568,7 @@ test.describe('Standard authentication providers: OIDC with RHSSO 7.6', () => {
 
     // after sync, ensure group is created again and memembers can login
     logger.info(
-      `Execute testcase: Remove a group from RHDH: group is created again after the sync`,
+      'Execute testcase: Remove a group from RHDH: group is created again after the sync',
     );
     await common.keycloakLogin(
       constants.RHSSO76_USERS['admin'].username,
@@ -588,7 +588,7 @@ test.describe('Standard authentication providers: OIDC with RHSSO 7.6', () => {
     }
 
     // rename group -> user can login, but policy is broken
-    logger.info(`Executing testcase: Rename a user and a group.`);
+    logger.info('Executing testcase: Rename a user and a group.');
 
     await rhssoHelper.updateUser(usersCreated['user_2'].id, {
       lastName: constants.RHSSO76_USERS['user_2'].lastName + ' Renamed',
@@ -606,7 +606,7 @@ test.describe('Standard authentication providers: OIDC with RHSSO 7.6', () => {
     // after sync, ensure group is mirrored
     // after sync, ensure user change is mirrorred
     logger.info(
-      `Execute testcase: Rename a user and a group: changes are mirrored in RHDH but permissions should be broken after the sync`,
+      'Execute testcase: Rename a user and a group: changes are mirrored in RHDH but permissions should be broken after the sync',
     );
     await common.keycloakLogin(
       constants.RHSSO76_USERS['admin'].username,
@@ -632,7 +632,7 @@ test.describe('Standard authentication providers: OIDC with RHSSO 7.6', () => {
     // users permission based on that group will be defaulted to read-only
     // expect user not to see catalog entities
     await page.goto('/');
-    const navMyGroup = page.locator(`nav a:has-text("My Group")`);
+    const navMyGroup = page.locator('nav a:has-text("My Group")');
     await expect(navMyGroup).toHaveCount(0);
 
     // update the policy with the new group name
@@ -650,7 +650,7 @@ test.describe('Standard authentication providers: OIDC with RHSSO 7.6', () => {
       logger.info(
         'Reloading page, permission should be updated automatically.',
       );
-      await expect(page.locator(`nav a:has-text("My Group")`)).toBeVisible({
+      await expect(page.locator('nav a:has-text("My Group")')).toBeVisible({
         timeout: 2000,
       });
     }).toPass({

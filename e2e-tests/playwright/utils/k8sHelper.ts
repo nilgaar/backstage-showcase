@@ -7,7 +7,7 @@ export class kubeCLient {
   kc: k8s.KubeConfig;
 
   constructor() {
-    logger.info(`Initializing Kubernetes API client`);
+    logger.info('Initializing Kubernetes API client');
     try {
       this.kc = new k8s.KubeConfig();
       this.kc.loadFromDefault();

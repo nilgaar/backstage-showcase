@@ -200,7 +200,7 @@ test.describe('Standard authentication providers: Micorsoft Azure EntraID', () =
 
     // remove user from azure -> authentication fails
     logger.info(
-      `Executing testcase: Remove user from Microsoft EntraID: authenticatin should fail before next sync.`,
+      'Executing testcase: Remove user from Microsoft EntraID: authenticatin should fail before next sync.',
     );
     await graphHelper.deleteUserByUpnAsync(
       constants.MSGRAPH_USERS['user_1'].userPrincipalName,
@@ -260,7 +260,7 @@ test.describe('Standard authentication providers: Micorsoft Azure EntraID', () =
     // move a user to another group -> user can still login
     // move user_2 to group_1
     logger.info(
-      `Executing testcase: Move a user to another group in Microsoft EntraID: user should still login before next sync.`,
+      'Executing testcase: Move a user to another group in Microsoft EntraID: user should still login before next sync.',
     );
 
     await graphHelper.addUserToGroupAsync(
@@ -284,7 +284,7 @@ test.describe('Standard authentication providers: Micorsoft Azure EntraID', () =
     await uiHelper.clickLink('example');
     await uiHelper.verifyHeading('example');
     await expect(
-      page.locator(`button[title="Schedule entity refresh"]`),
+      page.locator('button[title="Schedule entity refresh"]'),
     ).toHaveCount(0);
 
     await page.goto('/');
@@ -298,7 +298,7 @@ test.describe('Standard authentication providers: Micorsoft Azure EntraID', () =
     // after the sync
     // ensure the change is mirrored in the catalog
     logger.info(
-      `Execute testcase: Move a user to another group in Microsoft EntraID: change should be mirrored and permission should be updated after the sync`,
+      'Execute testcase: Move a user to another group in Microsoft EntraID: change should be mirrored and permission should be updated after the sync',
     );
     await common.MicrosoftAzureLogin(
       constants.MSGRAPH_USERS['user_2'].userPrincipalName,
@@ -330,7 +330,7 @@ test.describe('Standard authentication providers: Micorsoft Azure EntraID', () =
     // remove a group -> members still exists, member should still login
     // remove group_3
     logger.info(
-      `Executing testcase: Remove a group from Microsoft EntraID: ensure group and its members still exists, member should still login before next sync.`,
+      'Executing testcase: Remove a group from Microsoft EntraID: ensure group and its members still exists, member should still login before next sync.',
     );
 
     await graphHelper.deleteGroupByIdAsync(groupsCreated['group_3'].id);
@@ -360,7 +360,7 @@ test.describe('Standard authentication providers: Micorsoft Azure EntraID', () =
 
     // after the sync ensure the group entity is removed
     logger.info(
-      `Execute testcase: Remove a group from Microsoft EntraID: group should be removed and permissions should default to read-only after the sync.`,
+      'Execute testcase: Remove a group from Microsoft EntraID: group should be removed and permissions should default to read-only after the sync.',
     );
     await common.MicrosoftAzureLogin(
       constants.MSGRAPH_USERS['admin'].userPrincipalName,
@@ -384,7 +384,7 @@ test.describe('Standard authentication providers: Micorsoft Azure EntraID', () =
     // users permission based on that group will be defaulted to read-only
     // expect user not to see catalog entities
     await page.goto('/');
-    const navMyGroup = page.locator(`nav a:has-text("My Group")`);
+    const navMyGroup = page.locator('nav a:has-text("My Group")');
     await expect(navMyGroup).toHaveCount(0);
 
     await page.goto('/');
@@ -401,7 +401,7 @@ test.describe('Standard authentication providers: Micorsoft Azure EntraID', () =
 
     // remove user from RHDH -> authentication works, access is broken
     logger.info(
-      `Executing testcase: Remove a user from RHDH: authentication should work, but access is denied before next sync.`,
+      'Executing testcase: Remove a user from RHDH: authentication should work, but access is denied before next sync.',
     );
 
     await common.MicrosoftAzureLogin(
@@ -447,7 +447,7 @@ test.describe('Standard authentication providers: Micorsoft Azure EntraID', () =
 
     // after sync, user_4 is created again and can login
     logger.info(
-      `Execute testcase: Remove a user from RHDH: user is re-created and can login after the sync`,
+      'Execute testcase: Remove a user from RHDH: user is re-created and can login after the sync',
     );
 
     await common.MicrosoftAzureLogin(
@@ -467,7 +467,7 @@ test.describe('Standard authentication providers: Micorsoft Azure EntraID', () =
 
     // remove group from RHDH -> user can login, but policy is broken
     logger.info(
-      `Executing testcase: Remove a group from RHDH: user can login, but policy is broken before next sync.`,
+      'Executing testcase: Remove a group from RHDH: user can login, but policy is broken before next sync.',
     );
 
     await common.MicrosoftAzureLogin(
@@ -494,7 +494,7 @@ test.describe('Standard authentication providers: Micorsoft Azure EntraID', () =
 
     // after sync, ensure group_5 is created again and memembers can login
     logger.info(
-      `Execute testcase: Remove a group from RHDH: group is created again after the sync`,
+      'Execute testcase: Remove a group from RHDH: group is created again after the sync',
     );
     await common.MicrosoftAzureLogin(
       constants.MSGRAPH_USERS['user_5'].userPrincipalName,
@@ -515,7 +515,7 @@ test.describe('Standard authentication providers: Micorsoft Azure EntraID', () =
     }
     await WaitForNextSync(SYNC_TIME, 'microsoft');
     // rename group from RHDH -> user can login, but policy is broken
-    logger.info(`Executing testcase: Rename a user and a group.`);
+    logger.info('Executing testcase: Rename a user and a group.');
 
     await graphHelper.updateGrouprAsync(groupsCreated['group_6'], {
       displayName: groupsCreated['group_6'].displayName + '_renamed',
@@ -531,7 +531,7 @@ test.describe('Standard authentication providers: Micorsoft Azure EntraID', () =
     // after sync, ensure group is mirrored
     // after sync, ensure user change is mirrorred
     logger.info(
-      `Execute testcase: Rename a user and a group: changes are mirrored in RHDH but permissions should be broken after the sync`,
+      'Execute testcase: Rename a user and a group: changes are mirrored in RHDH but permissions should be broken after the sync',
     );
     await common.MicrosoftAzureLogin(
       constants.MSGRAPH_USERS['admin'].userPrincipalName,
@@ -555,7 +555,7 @@ test.describe('Standard authentication providers: Micorsoft Azure EntraID', () =
     // users permission based on that group will be defaulted to read-only
     // expect user not to see catalog entities
     await page.goto('/');
-    const navMyGroup = page.locator(`nav a:has-text("My Group")`);
+    const navMyGroup = page.locator('nav a:has-text("My Group")');
     await expect(navMyGroup).toHaveCount(0);
 
     // update the policy with the new group name
@@ -573,7 +573,7 @@ test.describe('Standard authentication providers: Micorsoft Azure EntraID', () =
       logger.info(
         'Reloading page, permission should be updated automatically.',
       );
-      await expect(page.locator(`nav a:has-text("My Group")`)).toBeVisible({
+      await expect(page.locator('nav a:has-text("My Group")')).toBeVisible({
         timeout: 2000,
       });
     }).toPass({

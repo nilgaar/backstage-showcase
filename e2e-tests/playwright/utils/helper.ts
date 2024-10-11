@@ -1,9 +1,9 @@
-import { logger } from './Logger';
 import { spawn } from 'child_process';
-import * as constants from './authenticationProviders/constants';
 import { expect } from '@playwright/test';
-import { kubeCLient } from './k8sHelper';
 import { V1ConfigMap, V1Secret } from '@kubernetes/client-node';
+import { logger } from './Logger';
+import * as constants from './authenticationProviders/constants';
+import { kubeCLient } from './k8sHelper';
 
 export const k8sClient = new kubeCLient();
 
@@ -37,7 +37,7 @@ export async function upgradeHelmChartWithWait(
   CHART_VERSION: string,
   QUAY_REPO: string,
   TAG_NAME: string,
-  FLAGS: Array<string>,
+  FLAGS: string[],
 ) {
   logger.info(`Deleting any exisitng helm release ${RELEASE}`);
   await deleteHelmReleaseWithWait(RELEASE, NAMESPACE);
@@ -53,7 +53,7 @@ export async function upgradeHelmChartWithWait(
 
   logger.log({
     level: 'info',
-    message: `Release upgrade returned: `,
+    message: 'Release upgrade returned: ',
     dump: upgradeOutput,
   });
 
@@ -63,7 +63,7 @@ export async function upgradeHelmChartWithWait(
   );
   logger.log({
     level: 'info',
-    message: `Applied confguration for release upgrade: `,
+    message: 'Applied confguration for release upgrade: ',
     dump: configmap.body.data,
   });
 
@@ -80,7 +80,7 @@ export async function deleteHelmReleaseWithWait(
   );
   logger.log({
     level: 'info',
-    message: `Release delete returned: `,
+    message: 'Release delete returned: ',
     dump: result,
   });
   return result;
