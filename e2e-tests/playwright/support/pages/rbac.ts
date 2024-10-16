@@ -66,13 +66,9 @@ export class Roles {
     await this.uiHelper.verifyHeading('Users and groups (2 users, 1 group)');
     await this.uiHelper.clickButton('Next');
 
-    await this.page.click(RoleFormPO.selectPermissionPolicyPlugin(0), {
-      timeout: 100000,
-    });
+    await this.page.click(RoleFormPO.selectPermissionPolicyPlugin(0));
     await this.uiHelper.optionSelector('catalog');
-    await this.page.click(RoleFormPO.selectPermissionPolicyPermission(0), {
-      timeout: 100000,
-    });
+    await this.page.click(RoleFormPO.selectPermissionPolicyPermission(0));
     await this.uiHelper.optionSelector('catalog-entity');
     await this.page.uncheck(RoleFormPO.selectPolicy(0, 1, 'Delete'));
 
@@ -84,7 +80,6 @@ export class Roles {
 
     await this.uiHelper.clickButton('Create');
 
-    await this.page.locator(HomePagePO.searchBar).waitFor({ timeout: 60000 });
     await this.page.locator(HomePagePO.searchBar).fill(name);
     await this.uiHelper.verifyHeading('All roles (1)');
   }
@@ -105,13 +100,9 @@ export class Roles {
     await this.uiHelper.verifyHeading('Users and groups (2 users, 1 group)');
     await this.uiHelper.clickButton('Next');
 
-    await this.page.click(RoleFormPO.selectPermissionPolicyPlugin(0), {
-      timeout: 100000,
-    });
+    await this.page.click(RoleFormPO.selectPermissionPolicyPlugin(0));
     await this.uiHelper.optionSelector('catalog');
-    await this.page.click(RoleFormPO.selectPermissionPolicyPermission(0), {
-      timeout: 100000,
-    });
+    await this.page.click(RoleFormPO.selectPermissionPolicyPermission(0));
     await this.uiHelper.optionSelector('catalog-entity');
 
     await this.page.getByLabel('configure-access').click();
@@ -167,14 +158,10 @@ export class Roles {
     await this.uiHelper.verifyHeading('Users and groups (2 users, 1 group)');
     await this.uiHelper.clickButton('Next');
 
-    await this.page.click(RoleFormPO.selectPermissionPolicyPlugin(0), {
-      timeout: 100000,
-    });
+    await this.page.click(RoleFormPO.selectPermissionPolicyPlugin(0));
     await this.uiHelper.optionSelector('catalog');
 
-    await this.page.click(RoleFormPO.selectPermissionPolicyPermission(0), {
-      timeout: 100000,
-    });
+    await this.page.click(RoleFormPO.selectPermissionPolicyPermission(0));
     await this.uiHelper.optionSelector('catalog-entity');
 
     await this.page.getByLabel('configure-access').click();
