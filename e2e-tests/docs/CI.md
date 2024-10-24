@@ -25,21 +25,13 @@ For scenarios where tests are not automatically triggered, or when you need to m
 
 2. **Triggering Tests Post-Validation:**
    - After a janus-idp member has validated the PR with `/ok-to-test`, anyone can trigger tests using the following commands:
-     - `/test`, `/test all` or `/test e2e-tests`
-     - `/retest`
+     - `/test`, `/test images`, `/test all` or `/test e2e-tests`
 
 These interactions are picked up by the OpenShift-CI service, which sets up a test environment on the **IBM Cloud**, specifically on an OpenShift Container Platform (OCP) cluster. The configurations and steps for setting up this environment are defined in the `openshift-ci-tests.sh` script. For more details, see the [High-Level Overview of `openshift-ci-tests.sh`](#high-level-overview-of-openshift-ci-testssh).
 
 ### Retrying Tests
 
 If the initial automatically triggered tests fail, OpenShift-CI will add a comment to the PR with information on how to retrigger the tests.
-
-- `/retest`
-- `/test e2e-tests`
-- `/test images`
-- `/test all`
-
-This is useful if you believe a failure was due to a flake or external issue and want to rerun the tests without making any code changes.
 
 ### CI Job Definitions
 
@@ -48,7 +40,7 @@ This is useful if you believe a failure was due to a flake or external issue and
 - **Purpose:** Validate new PRs for code quality, functionality, and integration.
 - **Trigger:**
   - **Automatic:** When a PR includes code changes affecting tests (excluding doc-only changes), tests are automatically triggered.
-  - **Manual:** When `/ok-to-test` is commented by a janus-idp member for external contributors or when `/test`, `/test all`, or `/retest` is issued after validation.
+  - **Manual:** When `/ok-to-test` is commented by a janus-idp member for external contributors or when `/test`, `/test images`, `/test all` and `/test e2e-tests` is commented after validation.
 - **Environment:** Runs on an ephemeral OpenShift cluster on IBM Cloud.
 - **Configurations:**
   - Tests are executed on both **RBAC** (Role-Based Access Control) and **non-RBAC** namespaces.
@@ -68,8 +60,6 @@ This is useful if you believe a failure was due to a flake or external issue and
      - Generates and uploads HTML reports.
 - **Artifacts:** Test reports, logs, screenshots, accessible via PR details under **Artifacts**.
 - **Notifications:** Status updates posted on the PR.
-- **Manual Retriggering:**
-  - Tests can be manually retriggered using the `/retest`, `/test e2e-tests` or `/test all` commands in the PR comments.
 
 ### GitHub PR Testing Diagram
 
