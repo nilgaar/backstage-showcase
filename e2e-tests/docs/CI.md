@@ -45,6 +45,7 @@ If the initial automatically triggered tests fail, OpenShift-CI will add a comme
 - **Configurations:**
   - Tests are executed on both **RBAC** (Role-Based Access Control) and **non-RBAC** namespaces.
 - **Steps:**
+
   1. **Detection:** OpenShift-CI detects the PR event.
   2. **Environment Setup:** The test environment is set up using the `openshift-ci-tests.sh` script (see the [High-Level Overview](#high-level-overview-of-openshift-ci-testssh)).
      - **Cluster Configuration:** Sets up the required namespaces and applies necessary configurations and secrets.
@@ -55,9 +56,11 @@ If the initial automatically triggered tests fail, OpenShift-CI will add a comme
   4. **Artifact Collection:**
      - Collects test artifacts (logs, screenshots, recordings).
      - Stores artifacts in the designated `ARTIFACT_DIR` for a retention period of **6 months**.
+     - The reports are also sent to _ReportPortal_
   5. **Reporting:**
      - Reports status back to the PR checks.
      - Generates and uploads HTML reports.
+
 - **Artifacts:** Test reports, logs, screenshots, accessible via PR details under **Artifacts**.
 - **Notifications:** Status updates posted on the PR.
 
