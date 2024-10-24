@@ -157,10 +157,10 @@ When the test run is complete, the status will be reported under your PR checks.
 ### Configuration Details
 
 - **Environment Variables and Secrets:**
-  - Stored securely in the **OpenShift-CI Vault** and accessed during runtime.
+  Stored securely in the **OpenShift-CI Vault** and accessed during runtime. Members of the organization can ask its peers for details about where and how to access this information.
 - **Cluster Credentials:**
-  - The script sets cluster URLs, tokens, and selects the appropriate OCP version based on job requirements.
+  The script sets cluster URLs, tokens, and selects the appropriate OCP version based on job requirements.
 - **Namespace and Resource Management:**
-  - Handles creation and deletion of namespaces and applies necessary Kubernetes resources.
+  Handles creation and deletion of namespaces and applies necessary Kubernetes resources.
 - **Dependency Management:**
-  - Installs required tools like `oc`, `kubectl`, and `helm` if not already available.
+  Installs required tools like `oc`, `kubectl`, and `helm` if not already available.
