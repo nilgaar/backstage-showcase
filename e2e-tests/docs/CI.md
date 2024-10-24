@@ -136,7 +136,7 @@ We maintain testing on the three most recent OCP versions. As new OCP versions a
 
 ### High-Level Overview of `openshift-ci-tests.sh`
 
-The `openshift-ci-tests.sh` script (located at `.ibm/pipelines/openshift-ci-tests.sh`) orchestrates the deployment and testing workflow for both PR and nightly jobs:
+The `openshift-ci-tests.sh` script (located at [`.ibm/pipelines/openshift-ci-tests.sh`](../../.ibm/pipelines/openshift-ci-tests.sh)) orchestrates the deployment and testing workflow for both PR and nightly jobs:
 
 - **Environment Preparation:** Sets up clusters and namespaces based on job requirements.
 - **Deployment:** Deploys RHDH instances using Helm charts.
